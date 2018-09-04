@@ -25,7 +25,7 @@ function setLS(key, value) {
 
 /*
  * Check whether user has already login or not
- * If user has already login then redirect them to domain list page
+ * If user has already login then redirect them to zone list page
  * If not then redirect them to login page
  */
 
@@ -40,10 +40,10 @@ $(document).ready(function () {
     };
     if (apikey && username && (window.location.pathname === "/")) {
         $('#msg-title').html('Redirecting...')
-        $('#msg-body').html('You have already logged in! Redirecting to Domain List Page in about 5 seconds...')
+        $('#msg-body').html('You have already logged in! Redirecting to Zone List Page in about 5 seconds...')
         $('#msg').modal()
         setTimeout(function () {
-            window.location.href = "/domain/"
+            window.location.href = "/zone/"
         }, 4000)
     }
 });
@@ -59,10 +59,10 @@ function loginSubmit() {
     setLS('token', loginKey);
     setLS('username', loginUsername);
     $('#msg-title').html('Logging in')
-    $('#msg-body').html('You will be redirected to Domain List Page in about 2 seconds...')
+    $('#msg-body').html('You will be redirected to Zone List Page in about 2 seconds...')
     $('#msg').modal()
     setTimeout(function () {
-        window.location.href = "/domain/"
+        window.location.href = "/zone/"
     }, 2000)
 }
 
@@ -74,12 +74,11 @@ function loginSubmit() {
 function logout() {
     localStorage.removeItem("username");
     localStorage.removeItem("secretkey");
-    mdui.alert('Cleaning browser localstorage. You will be logged out soon.');
     $('#msg-title').html('Logging out')
     $('#msg-body').html('Cleaning browser localstorage. You will be logged out soon.')
     $('#msg').modal()
     setTimeout(function () {
-        window.location.href = "/domain/"
+        window.location.href = "/"
     }, 2000)
 }
 
@@ -92,17 +91,18 @@ function getDomainList() {
     $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
     $.getJSON("https://api.zeit.co/v2/domains", function (data) {
         $.each(data.domains, function (index, value) {
+            $("#list-no-domain").addClass("sk-hide");
             $("#domainListBody").append(`
             <tr>
-                <td class="sk-text-dark sk-text-bold">${value.name}</td>
+                <td class="sk-text-dark sk-text-bold --font-family-monospace">${value.name}</td>
                 <td>${value.created}</td>
                 <td>${value.serviceType}</td>
                 <td>
-                    <button data-id="${value.name}" id="${value.name}-record" class="btn btn-info" onclick="recordDomain(this)">Record</button>
+                    <button data-id="${value.name}" id="${value.name}-record" class="btn btn-primary" onclick="recordDomain(this)">Record</button>
                     <button data-id="${value.name}" id="${value.name}-delete" class="btn btn-danger" onclick="confirmDeleteDomain(this)">DELETE</button>
                 </td>
             </tr>
-        `);
+            `);
         });
     });
 }
