@@ -15,10 +15,40 @@
 </head>
 
 <body class="sk-bg-gray">
+    <nav class="navbar navbar-expand-lg sk-bg-transparent sk-pt-5">
+        <div class="container">
+            <div class="sk-ml-3 d-lg-none"></div>
+            <h1 class="h5 sk-mb-0 navbar-brand sk-text-normal">
+                <img src="/assets/zeit-logo.svg" class="sk-pr-2"> World Panel
+            </h1>
+
+            <div class="mr-auto"></div>
+            <button class="navbar-toggler sk-text-dark" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path d="M0 0h24v24H0z" fill="none" />
+                    <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+                </svg>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto sk-pl-3">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="logout()">Logout</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://github.com/SukkaW/zeit-world-panel" target="_blank" rel="noreferrer noopenner">GitHub</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://zeit.co/api#endpoints/domains" target="_blank" rel="noreferrer noopenner">API</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     <div class="container sk-pt-8">
         <div class="text-center">
-            <h1 class="h5 sk-text-normal sk-pb-4"><img src="/assets/zeit-logo.svg" class="sk-pr-3">World DNS Panel</h1>
-            <h2 class="h4">Domain List</h2>
+            <h2 class="h4">Zone List</h2>
         </div>
         <div class="sk-shadow-2 sk-mt-8 table-container">
             <table class="table table-hover sk-mb-0">
@@ -30,7 +60,11 @@
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
-                <tbody id="domainListBody"></tbody>
+                <tbody id="domainListBody">
+                    <tr>
+                        <td class="sk-text-center" id="list-no-domain" colspan="4">NO DOMAINS TO SHOW</td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>
