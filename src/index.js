@@ -95,12 +95,12 @@ function getDomainList() {
             $("#domainListBody").append(`
             <tr>
                 <td class="sk-text-dark sk-text-bold --font-family-monospace">${value.name}</td>
-                <td>${value.created}</td>
                 <td>${value.serviceType}</td>
                 <td>
-                    <button data-id="${value.name}" id="${value.name}-record" class="btn btn-primary" onclick="recordDomain(this)">Record</button>
-                    <button data-id="${value.name}" id="${value.name}-delete" class="btn btn-danger" onclick="confirmDeleteDomain(this)">DELETE</button>
+                    <a data-id="${value.name}" id="${value.name}-record" class="sk-link text-primary sk-mr-1" onclick="recordDomain(this)">Record</a>
+                    <a data-id="${value.name}" id="${value.name}-delete" class="sk-link text-danger" onclick="confirmDeleteDomain(this)">DELETE</a>
                 </td>
+                <td>${new Date(value.created).toLocaleDateString()}</td>
             </tr>
             `);
         });
