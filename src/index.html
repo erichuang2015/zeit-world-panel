@@ -29,16 +29,12 @@
                     </div>
                     <div class="form-group">
                         <label for="formGroupExampleInput2">Secret Token</label>
-                        <input name="token" type="password" class="form-control" id="token" placeholder="Paste your token here" required>
-                        <small class="form-text text-muted">You can generate or copy your token <a class="sk-link text-primary" href="https://zeit.co/account/tokens" target="_blank">here</a>.</small>
+                        <input name="token" type="password" class="form-control" id="login-token" placeholder="Paste your token here" required>
+                        <small class="form-text text-muted">You can generate or copy your zeit token <a class="sk-link text-primary"
+                                href="https://zeit.co/account/tokens" target="_blank">here</a>.</small>
                     </div>
-                    <div class="form-group">
-                        <label for="formGroupExampleInput2">ZEIT API Endpoint</label>
-                        <input name="api" type="url" class="form-control" id="login-api" value="https://api.zeit.co/v2/domains/" placeholder="The zeit api endpoint to use" required>
-                        <small class="form-text text-muted">You can either choose zeit api endpoint or your own reverse proxy.</small>
-                    </div>
-               </form>
-               <button class="btn btn-block btn-primary">Submit</button>
+                </form>
+                <button class="btn btn-block btn-primary" onclick="loginSubmit()">Submit</button>
             </div>
         </div>
         <div class="card sk-center sk-ml-2 sk-mr-2 sk-mt-4" style="max-width: 400px; background: transparent">
@@ -47,8 +43,24 @@
             </div>
         </div>
     </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="msg" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="msg-title"></h5>
+                </div>
+                <div class="modal-body" id="msg-body"></div>
+            </div>
+        </div>
+    </div>
+
+
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/index.js"></script>
 </body>
 
 </html>
