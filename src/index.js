@@ -102,7 +102,7 @@ function getDomainList() {
                     <td class="sk-text-bold"><a href="/record/?domain=${value.name}">${value.name}</a></td>
                     <td>${value.serviceType}</td>
                     <td>
-                        <button data-id="${value.name}" id="${value.name}-delete" onclick="confirmDeleteDomain(this) type="button" class="btn sk-bg-error sk-text-light">DELETE</button>
+                        <button data-id="${value.name}" id="${value.name}-del-btn" onclick="confirmDeleteDomain(this)" type="button" class="btn sk-bg-error sk-text-light">DELETE</button>
                     </td>
                     <td>${new Date(value.created).toLocaleDateString()}</td>
                 </tr>
@@ -113,7 +113,7 @@ function getDomainList() {
         },
         error: function (data) {
             $('#msg-title').html('Something wrong happened')
-            $('#msg-body').html('The page will be refreshed in 3 second')
+            $('#msg-body').html('<code>' + data.responseText + '</code><br>The page will be refreshed in 3 second')
             $('#msg').modal()
             setTimeout(function () {
                 location.reload();
@@ -141,19 +141,58 @@ function newDomain() {
         data: "{\"name\":\"" + newdomain + "\",\"serviceType\":\"zeit.world\"}",
         success: function (data) {
             $('#msg-title').html(newdomain + ' added successfully')
-            $('#msg-body').html('The page will be refreshed in 3 second')
+            $('#msg-body').html('The page will be refreshed in 5 second')
             $('#msg').modal()
             setTimeout(function () {
                 location.reload();
-            }, 3000)
+            }, 5000)
         },
         error: function (data) {
             $('#msg-title').html('Something wrong happened')
-            $('#msg-body').html('The page will be refreshed in 3 second')
+            $('#msg-body').html('<code>' + data.responseText + '</code><br>The page will be refreshed in 5 second')
             $('#msg').modal()
             setTimeout(function () {
                 location.reload();
-            }, 3000)
+            }, 5000)
+        }
+    });
+}
+
+/*
+ * confirmDeleteDomain()
+ * deleteDomain()
+ * Used at domain list page
+ */
+
+function confirmDeleteDomain(el) {
+    var domainWillBeleted = el.getAttribute("data-id");
+    $('#msg-title').html('<span class="sk-text-bold text-danger">ATTENTION!!</span>')
+    $('#msg-body').html('<span class="sk-text-bold">Domain <span class="text-info">' + domainWillBeleted + '</span> will be deleted!</span><br>Are you sure you want to delele this domain? All records belong to this domain will be deleted and can\'t be recovered!!' + '<br><button type="button" class="btn btn-danger sk-mt-4 sk-mr-2" onclick="deleteDomain(\''+ domainWillBeleted +'\')">Confirm</button><button type="button" class="btn btn-secondary sk-mt-4" data-dismiss="modal" aria-label="Close">Cancel</button>')
+    $('#msg').modal()
+}
+
+function deleteDomain(domain) {
+    console.log(domain)
+    $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
+    $.ajax({
+        url: 'https://zeit-dns-panel.netlify.com/api/domains/' + domain,
+        type: 'DELETE',
+        data: {},
+        success: function (data) {
+            $('#msg-title').html('Successfully deleted!')
+            $('#msg-body').html('The page will be refreshed in 5 second')
+            $('#msg').modal()
+            setTimeout(function () {
+                location.reload();
+            }, 5000)
+        },
+        error: function (data) {
+            $('#msg-title').html('Something wrong happened')
+            $('#msg-body').html(data.responseText + '<br>The page will be refreshed in 5 second')
+            $('#msg').modal()
+            setTimeout(function () {
+                location.reload();
+            }, 5000)
         }
     });
 }
