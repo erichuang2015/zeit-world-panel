@@ -88,21 +88,23 @@ function logout() {
  */
 
 function getDomainList() {
+    var domainNum = 0;
     $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
     $.getJSON("https://api.zeit.co/v2/domains", function (data) {
         $.each(data.domains, function (index, value) {
             $("#list-no-domain").addClass("sk-hide");
             $("#domainListBody").append(`
             <tr>
-                <td class="sk-text-dark sk-text-bold --font-family-monospace">${value.name}</td>
+                <td class="sk-text-bold"><a href="/record/?domain=${value.name}">${value.name}</a></td>
                 <td>${value.serviceType}</td>
                 <td>
-                    <a data-id="${value.name}" id="${value.name}-record" class="sk-link text-primary sk-mr-1" onclick="recordDomain(this)">Record</a>
-                    <a data-id="${value.name}" id="${value.name}-delete" class="sk-link text-danger" onclick="confirmDeleteDomain(this)">DELETE</a>
+                    <button data-id="${value.name}" id="${value.name}-delete" onclick="confirmDeleteDomain(this) type="button" class="btn sk-bg-error sk-text-light">DELETE</button>
                 </td>
                 <td>${new Date(value.created).toLocaleDateString()}</td>
             </tr>
             `);
+            domainNum = domainNum + 1;
+            $("#list-domain-num").html(domainNum)
         });
     });
 }

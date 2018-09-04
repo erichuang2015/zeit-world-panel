@@ -34,35 +34,46 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto sk-pl-3">
                     <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="logout()">Logout</a>
+                        <a class="nav-link sk-text-dark sk-text-bold" href="#" onclick="addnewDomain()">Add</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="https://github.com/SukkaW/zeit-world-panel" target="_blank" rel="noreferrer noopenner">GitHub</a>
+                        <a class="nav-link sk-text-dark sk-text-bold" href="#" onclick="logout()">Logout</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="https://zeit.co/api#endpoints/domains" target="_blank" rel="noreferrer noopenner">API</a>
+                        <a class="nav-link sk-text-dark" href="https://github.com/SukkaW/zeit-world-panel" target="_blank" rel="noreferrer noopenner">GitHub</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link sk-text-dark" href="https://zeit.co/api#endpoints/domains" target="_blank" rel="noreferrer noopenner">API</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
     <div class="container sk-pt-8">
-        <div class="text-center">
-            <h2 class="h4">Zone List</h2>
+        <div class="card sk-mt-8 sk-mb-4 sk-no-border sk-shadow-2">
+            <div class="card-body">
+                <h2 class="h4 card-title" style="line-height: 38px">
+                    Zone List
+                    <button type="button" class="btn btn-primary sk-fr" data-toggle="modal" data-target="#new-domain">Add New Domain</button>
+                </h2>
+                <p class="card-text">There are <span id="list-domain-num">0</span> domain(s) at ZEIT</p>
+
+            </div>
         </div>
-        <div class="sk-shadow-2 sk-mt-8 table-container">
-            <table class="table table-hover sk-mb-0">
-                <thead class="sk-text-gray sk-font-14">
+        <div class="sk-shadow-2 table-container">
+            <table class="table table-hover sk-mb-0 bg-white">
+                <thead class="sk-text-dark sk-font-14">
                     <tr>
-                        <th scope="col">Domain</th>
-                        <th scope="col">Type</th>
-                        <th scope="col">Action</th>
-                        <th scope="col">Created</th>
+                        <th class="sk-text-normal" scope="col">Domain</th>
+                        <th class="sk-text-normal" scope="col">Type</th>
+                        <th class="sk-text-normal" scope="col">Action</th>
+                        <th class="sk-text-normal" scope="col">Created</th>
                     </tr>
                 </thead>
                 <tbody id="domainListBody">
                     <tr>
-                        <td class="sk-text-center" id="list-no-domain" colspan="4">NO DOMAINS TO SHOW</td>
+                        <td class="sk-text-center sk-text-gray sk-text-bold" id="list-no-domain" colspan="4">NO DOMAIN TO
+                            SHOW</td>
                     </tr>
                 </tbody>
             </table>
@@ -80,6 +91,8 @@
             </div>
         </div>
     </div>
+
+
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.bundle.min.js"></script>
