@@ -43,7 +43,7 @@ $(document).ready(function () {
         $('#msg-body').html('You have already logged in! Redirecting to Domain List Page in about 5 seconds...')
         $('#msg').modal()
         setTimeout(function () {
-            window.location.href = "/list/"
+            window.location.href = "/domain/"
         }, 4000)
     }
 });
@@ -62,6 +62,47 @@ function loginSubmit() {
     $('#msg-body').html('You will be redirected to Domain List Page in about 2 seconds...')
     $('#msg').modal()
     setTimeout(function () {
-        window.location.href = "/list/"
+        window.location.href = "/domain/"
     }, 2000)
+}
+
+/*
+ * logout()
+ * Used at every page except login page
+ */
+
+function logout() {
+    localStorage.removeItem("username");
+    localStorage.removeItem("secretkey");
+    mdui.alert('Cleaning browser localstorage. You will be logged out soon.');
+    $('#msg-title').html('Logging out')
+    $('#msg-body').html('Cleaning browser localstorage. You will be logged out soon.')
+    $('#msg').modal()
+    setTimeout(function () {
+        window.location.href = "/domain/"
+    }, 2000)
+}
+
+/*
+ * getDomainList()
+ * Used at domain list page
+ */
+
+function getDomainList() {
+    $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
+    $.getJSON("https://api.zeit.co/v2/domains", function (data) {
+        $.each(data.domains, function (index, value) {
+            $("#domainListBody").append(`
+            <tr>
+                <td class="sk-text-dark sk-text-bold">${value.name}</td>
+                <td>${value.created}</td>
+                <td>${value.serviceType}</td>
+                <td>
+                    <button data-id="${value.name}" id="${value.name}-record" class="btn btn-info" onclick="recordDomain(this)">Record</button>
+                    <button data-id="${value.name}" id="${value.name}-delete" class="btn btn-danger" onclick="confirmDeleteDomain(this)">DELETE</button>
+                </td>
+            </tr>
+        `);
+        });
+    });
 }
