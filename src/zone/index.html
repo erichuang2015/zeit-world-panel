@@ -54,7 +54,8 @@
             <div class="card-body">
                 <h2 class="h4 card-title" style="line-height: 38px">
                     Zone List
-                    <button type="button" class="btn btn-primary sk-fr" data-toggle="modal" data-target="#new-domain">Add New Domain</button>
+                    <button type="button" class="btn btn-primary sk-fr" data-toggle="modal" data-target="#new-domain">Add
+                        New Domain</button>
                 </h2>
                 <p class="card-text">There are <span id="list-domain-num">0</span> domain(s) at ZEIT</p>
 
@@ -73,7 +74,8 @@
                 <tbody id="domainListBody">
                     <tr>
                         <td class="sk-text-center sk-text-gray sk-text-bold" id="list-no-domain" colspan="4">NO DOMAIN TO
-                            SHOW</td>
+                            SHOW
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -92,7 +94,23 @@
         </div>
     </div>
 
-
+    <!-- new Domain Modal -->
+    <div class="modal fade" id="new-domain" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add a domain to ZEIT World DNS</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Domain</label>
+                        <input type="text" class="form-control" id="new-domain-name" placeholder="Enter your domain" required>
+                    </div>
+                    <button class="btn btn-block btn-primary" onclick="">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.bundle.min.js"></script>
