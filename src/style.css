@@ -59,3 +59,7 @@ html *::-webkit-scrollbar-thumb {
     user-select: none;
     opacity: .8;
 }
+
+.hoverable:hover {
+    background-color: #f1f2f3;
+}
