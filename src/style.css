@@ -117,6 +117,10 @@ html *::-webkit-scrollbar-thumb {
     text-align: right;
 }
 
+.record-main-focus {
+    background: #ececec;
+}
+
 .record-inline>* {
     -webkit-box-flex: 1;
     -ms-flex: 1 0 128px;
@@ -124,4 +128,8 @@ html *::-webkit-scrollbar-thumb {
     margin-left: 16px;
     min-width: 0;
     white-space: nowrap;
+}
+
+.record-info {
+    background: #ececec;
 }
