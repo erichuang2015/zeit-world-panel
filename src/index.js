@@ -218,6 +218,7 @@ function getCurrentDomain() {
         }), e ? n[e] : n
     };
     window.currentDomain = location.search.queryUrl();
+    $("#current-domain").html(currentDomain.domain)
 }
 
 /*
@@ -225,6 +226,7 @@ function getCurrentDomain() {
  * Used at record list page
  */
 function getRecordList() {
+    var recordNum = 0
     $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
 
     $.ajax({
@@ -233,6 +235,8 @@ function getRecordList() {
         data: {},
         success: function (data) {
             $.each(data.records, function (index, value) {
+                recordNum = recordNum + 1
+
                 if (value.name.length === 0) {
                     var recordName = "@"
                 } else {
@@ -293,6 +297,7 @@ function getRecordList() {
                 `);
             });
             showRecordInfo();
+            $("#record-list-num").html(recordNum)
         },
         error: function (data) {
             $('#msg-title').html('Something wrong happened')
@@ -304,6 +309,7 @@ function getRecordList() {
         }
     });
 }
+
 /*
  * showRecordInfo()
  * Used only in getRecordList()
@@ -314,3 +320,8 @@ function showRecordInfo() {
         $(this).nextUntil('tr.record-main').toggleClass("sk-hide");
     });
 }
+
+/*
+ * confirmDeleteRecord()
+ * Used only in record list page
+ */
