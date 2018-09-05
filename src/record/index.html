@@ -54,7 +54,7 @@
             <div class="card-body">
                 <h2 class="h4 card-title" id="current-domain" style="line-height: 38px"></h2>
                 <p class="card-text">There are <span id="record-list-num">0</span> DNS records under this domain.</p>
-
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new-record">Add New Record</button>
             </div>
         </div>
 
@@ -72,60 +72,7 @@
                         <th scope="col">Updated</th>
                     </tr>
                 </thead>
-                <tbody id="domainListBody">
-                    <!-- https://stackoverflow.com/questions/16926752/expand-collapse-table-rows-with-jquery -->
-                    <tr class="record-main">
-                        <td>@</td>
-                        <td>21600</td>
-                        <td>IN</td>
-                        <td>NS</td>
-                        <td>a.zeit.world</td>
-                        <td>
-
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr class="record-info sk-hide">
-                        <td>@</td>
-                        <td>21600</td>
-                        <td>IN</td>
-                        <td>b.zeit.world</td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr class="record-main">
-                        <td>@</td>
-                        <td>21600</td>
-                        <td>IN</td>
-                        <td>c.zeit.world</td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>@</td>
-                        <td>21600</td>
-                        <td>IN</td>
-                        <td>d.zeit.world</td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>@</td>
-                        <td>21600</td>
-                        <td>IN</td>
-                        <td>e.zeit.world</td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>@</td>
-                        <td>21600</td>
-                        <td>IN</td>
-                        <td>f.zeit.world</td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </tbody>
+                <tbody id="domainListBody"></tbody>
             </table>
         </div>
     </div>
@@ -141,6 +88,23 @@
                     </button>
                 </div>
                 <div class="modal-body" id="msg-body"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Record Modal -->
+    <div class="modal fade" id="new-record" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create a new DNS record</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- form -->
+                </div>
             </div>
         </div>
     </div>
