@@ -54,14 +54,15 @@
         <div class="sk-shadow-2 table-container">
 
             <table class="table table-hover table-borderless sk-mb-0 bg-white">
-                <thead class="sk-text-dark sk-font-14">
+                <thead class="sk-text-dark sk-bg-gray sk-font-14">
                     <tr>
-                        <th class="sk-text-normal" scope="col">Name</th>
-                        <th class="sk-text-normal" scope="col">TTL</th>
-                        <th class="sk-text-normal" scope="col"></th>
-                        <th class="sk-text-normal" scope="col">Value</th>
-                        <th class="sk-text-normal" scope="col">Action</th>
-                        <th class="sk-text-normal" scope="col">Updated</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">TTL</th>
+                        <th scope="col"></th>
+                        <th scope="col">Value</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Action</th>
+                        <th scope="col">Updated</th>
                     </tr>
                 </thead>
                 <tbody id="domainListBody">
@@ -70,6 +71,7 @@
                         <td>@</td>
                         <td>21600</td>
                         <td>IN</td>
+                        <td>NS</td>
                         <td>a.zeit.world</td>
                         <td>
 
@@ -140,10 +142,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/index.js"></script>
     <script>
-        $('.record-main').click(function () {
-            $(this).toggleClass("record-main-focus");
-            $(this).nextUntil('tr.record-main').toggleClass("sk-hide");
-        });
+        getCurrentDomain();
+        getRecordList();
+    </script>
+    <script>
+
     </script>
 </body>
 
