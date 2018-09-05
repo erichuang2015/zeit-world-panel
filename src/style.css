@@ -54,3 +54,8 @@ html *::-webkit-scrollbar-thumb {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
 }
+
+.disabled {
+    user-select: none;
+    opacity: .8;
+}

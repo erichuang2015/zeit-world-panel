@@ -175,7 +175,7 @@ function deleteDomain(domain) {
     console.log(domain)
     $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
     $.ajax({
-        url: 'https://zeit-dns-panel.netlify.com/api/domains/' + domain,
+        url: 'https://api.zeit.co/v2/domains' + domain,
         type: 'DELETE',
         data: {},
         success: function (data) {
