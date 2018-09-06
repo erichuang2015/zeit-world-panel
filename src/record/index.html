@@ -126,7 +126,7 @@
                                 Subdomain name, none as @
                             </small>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" id="new-record-mx-priority-group">
                             <label for="new-record-mx-priority">MX Priority</label>
                             <input class="form-control" id="new-record-mx-priority" min="0" type="number" autocomplete="off" autocorrect="off" autocapitalize="none"
                                 spellcheck="false" required>
@@ -142,7 +142,7 @@
                                 disabled value="60">
                         </div>
                     </form>
-                    <button type="button" class="btn btn-primary sk-mt-4 sk-mr-2">Submit</button>
+                    <button type="button" class="btn btn-primary sk-mt-4 sk-mr-2" onclick="submitNewRecord()">Submit</button>
                     <button type="button" class="btn btn-secondary sk-mt-4" data-dismiss="modal" aria-label="Close">Cancel</button>
                 </div>
             </div>
@@ -154,6 +154,7 @@
     <script src="/index.js"></script>
     <script>
         getCurrentDomain();
+        toggleMXPriority();
         getRecordList();
     </script>
 </body>

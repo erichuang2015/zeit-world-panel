@@ -338,7 +338,7 @@ function confirmDeleteRecord(el) {
 function deleteRecord(id) {
     $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
     $.ajax({
-        url: 'https://zeit-dns-panel.netlify.com/api/domains/' + currentDomain.domain + '/records/' + id,
+        url: 'https://api.zeit.co/v2/domains/' + currentDomain.domain + '/records/' + id,
         type: 'DELETE',
         data: {},
         success: function (data) {
@@ -358,4 +358,99 @@ function deleteRecord(id) {
             }, 5000)
         }
     });
+}
+
+/*
+ * toggleMXPriority()
+ * Used only at record list page
+ */
+
+function toggleMXPriority() {
+    $('#new-record-mx-priority-group').css({ display: "none" });
+    $('#new-record-type').on('change', function () {
+        if ($('#new-record-type').val() === "MX") {
+            $('#new-record-mx-priority-group').css({ display: "block" });
+        } else {
+            $('#new-record-mx-priority-group').css({ display: "none" });
+        }
+    });
+}
+
+/*
+ * submitNewRecord()
+ * Used only at record list page
+ */
+
+function submitNewRecord() {
+    $('#new-record').modal('hide')
+    $('#msg-title').html('Adding new record')
+    $('#msg-body').html('Please sit and relax...')
+    $('#msg').modal()
+    var newRecordName = $('#new-record-name').val();
+    var newRecordType = $('#new-record-type').val();
+    var newRecordMXPriority = $('#new-record-mx-priority').val();
+    var newRecordValue = $('#new-record-value').val();
+    $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
+    if (newRecordName === "@") {
+        newRecordName = "";
+    }
+    if (newRecordType === "MX") {
+        $.ajax({
+            type: "POST",
+            url: "https://api.zeit.co/v2/domains/" + currentDomain.domain + "/records",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify({
+                name: newRecordName,
+                type: newRecordType,
+                mxPriority: parseInt(newRecordMXPriority),
+                value: newRecordValue
+            }),
+            success: function (data) {
+                $('#msg-title').html('New record successfully added!')
+                $('#msg-body').html('The page will be refreshed in 5 second.')
+                $('#msg').modal()
+                setTimeout(function () {
+                    location.reload();
+                }, 5000)
+            },
+            error: function (data) {
+                $('#msg-title').html('Something wrong happened')
+                $('#msg-body').html('<code>' + data.responseText + '</code><br>The page will be refreshed in 5 second.')
+                $('#msg').modal()
+                debugger;
+                setTimeout(function () {
+                    location.reload();
+                }, 5000)
+            }
+        });
+    } else {
+        $.ajax({
+            type: "POST",
+            url: "https://api.zeit.co/v2/domains/" + currentDomain.domain + "/records",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify({
+                name: newRecordName,
+                type: newRecordType,
+                value: newRecordValue
+            }),
+            success: function (data) {
+                $('#msg-title').html('New record successfully added!')
+                $('#msg-body').html('The page will be refreshed in 5 second.')
+                $('#msg').modal()
+                setTimeout(function () {
+                    location.reload();
+                }, 5000)
+            },
+            error: function (data) {
+                $('#msg-title').html('Something wrong happened')
+                $('#msg-body').html('<code>' + data.responseText + '</code><br>The page will be refreshed in 5 second.')
+                $('#msg').modal()
+                setTimeout(function () {
+                    location.reload();
+                }, 5000)
+            }
+        });
+    }
 }
