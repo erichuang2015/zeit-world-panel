@@ -237,8 +237,8 @@ function getCurrentDomain() {
             r in n ? n[r] instanceof Array ? n[r].push(i) : n[r] = [n[r], i] : n[r] = /\[\]$/.test(r) ? [i] : i
         }), e ? n[e] : n
     };
-    window.currentDomain = location.search.queryUrl();
-    $("#current-domain").html(currentDomain.domain)
+    window.searchQuery = location.search.queryUrl();
+    $("#current-domain").html(searchQuery.domain)
 }
 
 /*
@@ -250,7 +250,7 @@ function getRecordList() {
     $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
 
     $.ajax({
-        url: apiendpoint + '/v2/domains/' + currentDomain.domain + '/records',
+        url: apiendpoint + '/v2/domains/' + searchQuery.domain + '/records',
         type: 'GET',
         data: {},
         success: function (data) {
@@ -264,9 +264,9 @@ function getRecordList() {
                 }
 
                 if (value.name.length === 0) {
-                    var recordDomain = currentDomain.domain
+                    var recordDomain = searchQuery.domain
                 } else {
-                    var recordDomain = value.name + "." + currentDomain.domain
+                    var recordDomain = value.name + "." + searchQuery.domain
                 }
 
                 if (value.mxPriority) {
@@ -362,7 +362,7 @@ function deleteRecord(id, type) {
     $('#msg').modal()
     $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
     $.ajax({
-        url: apiendpoint + '/v2/domains/' + currentDomain.domain + '/records/' + id,
+        url: apiendpoint + '/v2/domains/' + searchQuery.domain + '/records/' + id,
         type: 'DELETE',
         data: {},
         success: function (data) {
@@ -421,7 +421,7 @@ function submitNewRecord() {
     if (newRecordType === "MX") {
         $.ajax({
             type: 'POST',
-            url: apiendpoint + "/v2/domains/" + currentDomain.domain + "/records",
+            url: apiendpoint + "/v2/domains/" + searchQuery.domain + "/records",
             dataType: "json",
             contentType: "application/json",
             data: JSON.stringify({
@@ -451,7 +451,7 @@ function submitNewRecord() {
     } else {
         $.ajax({
             type: 'POST',
-            url: apiendpoint + '/v2/domains/' + currentDomain.domain + '/records',
+            url: apiendpoint + '/v2/domains/' + searchQuery.domain + '/records',
             dataType: 'json',
             contentType: 'application/json',
             data: JSON.stringify({
@@ -485,5 +485,5 @@ function submitNewRecord() {
  */
 /*     var domainWillBeleted = el.getAttribute("data-id"); */
 function setAttrDeleteBtn() {
-    document.getElementById('record-del-btn').setAttribute('data-id', currentDomain.domain);
+    document.getElementById('record-del-btn').setAttribute('data-id', searchQuery.domain);
 }
