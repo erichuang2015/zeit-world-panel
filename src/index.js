@@ -113,7 +113,7 @@ function getDomainList() {
         },
         error: function (data) {
             $('#msg-title').html('Something wrong happened')
-            $('#msg-body').html('<code>' + data.responseText + '</code><br>The page will be refreshed in 3 second')
+            $('#msg-body').html('<code>' + data.responseText + '</code><br>The page will be refreshed in 3 second.')
             $('#msg').modal()
             setTimeout(function () {
                 location.reload();
@@ -130,8 +130,8 @@ function getDomainList() {
 function newDomain() {
     $('#new-domain').modal('hide')
     var newdomain = document.getElementById('new-domain-name').value;
-    $('#msg-title').html('Adding' + '&nbsp;<span class=\"text-primary\">' + newdomain + '</span>')
-    $('#msg-body').html('Please sit and relax')
+    $('#msg-title').html('Adding' + '&nbsp;<span class=\"text-info\">' + newdomain + '</span>')
+    $('#msg-body').html('Please sit and relax...')
     $('#msg').modal()
     $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
     $.ajax({
@@ -140,7 +140,7 @@ function newDomain() {
         dataType: "json",
         data: "{\"name\":\"" + newdomain + "\",\"serviceType\":\"zeit.world\"}",
         success: function (data) {
-            $('#msg-title').html(newdomain + ' added successfully')
+            $('#msg-title').html('<span class=\"text-info\">' + newdomain + '</span> added successfully')
             $('#msg-body').html('The page will be refreshed in 5 second')
             $('#msg').modal()
             setTimeout(function () {
@@ -149,7 +149,7 @@ function newDomain() {
         },
         error: function (data) {
             $('#msg-title').html('Something wrong happened')
-            $('#msg-body').html('<code>' + data.responseText + '</code><br>The page will be refreshed in 5 second')
+            $('#msg-body').html('<code>' + data.responseText + '</code><br>The page will be refreshed in 5 second.')
             $('#msg').modal()
             setTimeout(function () {
                 location.reload();
@@ -174,11 +174,11 @@ function confirmDeleteDomain(el) {
 function deleteDomain(domain) {
     $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
     $.ajax({
-        url: 'https://api.zeit.co/v2/domains' + domain,
+        url: 'https://api.zeit.co/v2/domains/' + domain,
         type: 'DELETE',
         data: {},
         success: function (data) {
-            $('#msg-title').html('Successfully deleted!')
+            $('#msg-title').html('<span class=\"text-info\">' + domain + '</span> was successfully deleted!')
             $('#msg-body').html('The page will be refreshed in 5 second')
             $('#msg').modal()
             setTimeout(function () {
@@ -187,7 +187,7 @@ function deleteDomain(domain) {
         },
         error: function (data) {
             $('#msg-title').html('Something wrong happened')
-            $('#msg-body').html('<code>' + data.responseText + '</code><br>The page will be refreshed in 5 second')
+            $('#msg-body').html('<code>' + data.responseText + '</code><br>The page will be refreshed in 5 second.')
             $('#msg').modal()
             setTimeout(function () {
                 location.reload();
