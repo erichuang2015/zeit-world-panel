@@ -52,7 +52,7 @@
     <div class="container sk-pt-8">
         <div class="card sk-mt-8 sk-mb-4 sk-no-border sk-shadow-2">
             <div class="card-body">
-                <h2 class="h4 card-title" id="current-domain" style="line-height: 38px"></h2>
+                <h2 class="h4 card-title" id="current-domain"></h2>
                 <p class="card-text">There are <span id="record-list-num">0</span> DNS records under this domain.</p>
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new-record">Add New Record</button>
             </div>
@@ -74,6 +74,54 @@
                 </thead>
                 <tbody id="domainListBody"></tbody>
             </table>
+        </div>
+
+        <div class="card sk-mt-8 sk-mb-4 sk-no-border sk-shadow-2">
+            <div class="card-body">
+                <h2 class="h4 card-title">Nameservers</h2>
+                <p class="sk-text-dark">To use ZEIT World DNS, you need to point your domains to ZEIT Nameservers. Go to your domain registrar and change your domain's nameservers to the following custom hostnames assigned to your DNS zone.</p>
+                <table class="table record-ns-list table-borderless sk-mb-0">
+                    <thead>
+                        <tr>
+                            <th class="sk-pl-0" scope="col">Host</th>
+                            <th scope="col">IP</th>
+                            <th scope="col">IPv6</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="sk-pl-0"><strong>a</strong>.zeit.world</td>
+                            <td>96.45.80.1</td>
+                            <td>2600:180a:1001::1</td>
+                        </tr>
+                        <tr>
+                            <td class="sk-pl-0"><strong>b</strong>.zeit.world</td>
+                            <td>46.31.236.1</td>
+                            <td>2600:180b:2001::1</td>
+                        </tr>
+                        <tr>
+                            <td class="sk-pl-0"><strong>c</strong>.zeit.world</td>
+                            <td>43.247.170.1</td>
+                            <td>2600:180c:3001::1</td>
+                        </tr>
+                        <tr>
+                            <td class="sk-pl-0"><strong>d</strong>.zeit.world</td>
+                            <td>96.45.81.1</td>
+                            <td>2600:180a:4001::1</td>
+                        </tr>
+                        <tr>
+                            <td class="sk-pl-0"><strong>e</strong>.zeit.world</td>
+                            <td>46.31.237.1</td>
+                            <td>2600:180b:5001::1</td>
+                        </tr>
+                        <tr>
+                            <td class="sk-pl-0"><strong>f</strong>.zeit.world</td>
+                            <td>43.247.171.1</td>
+                            <td>2600:180c:6001::1</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
