@@ -104,25 +104,46 @@
                 </div>
                 <div class="modal-body">
                     <form>
-                            <div class="form-group">
-                                    <label for="exampleFormControlSelect1">Record type</label>
-                                    <select class="form-control" id="exampleFormControlSelect1">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
-                                </div>
                         <div class="form-group">
-                            <label for="exampleFormControlInput1">Email address</label>
-                            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+                            <label for="new-record-type">Record type</label>
+                            <select class="form-control" id="new-record-type" required>
+                                <option disabled selected>Select a record type…</option>
+                                <option value="A">A</option>
+                                <option value="AAAA">AAAA</option>
+                                <option value="ALIAS">ALIAS (CNAME Flattening)</option>
+                                <option value="CAA">CAA</option>
+                                <option value="CNAME">CNAME</option>
+                                <option value="MX">MX</option>
+                                <option value="SRV">SRV</option>
+                                <option value="TXT">TXT</option>
+                            </select>
                         </div>
                         <div class="form-group">
-                            <label for="exampleFormControlTextarea1">Example textarea</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            <label for="new-record-name">Name</label>
+                            <input class="form-control" id="new-record-name" type="text" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"
+                                required>
+                            <small id="passwordHelpBlock" class="form-text text-muted">
+                                Subdomain name, none as @
+                            </small>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-record-mx-priority">MX Priority</label>
+                            <input class="form-control" id="new-record-mx-priority" min="0" type="number" autocomplete="off" autocorrect="off" autocapitalize="none"
+                                spellcheck="false" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-record-value">Value</label>
+                            <input class="form-control" id="new-record-value" type="input" autocomplete="off" autocorrect="off" autocapitalize="none"
+                                spellcheck="false" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="new-record-ttl">TTL&nbsp;<small class="sk-text-dark">(seconds)</small></label>
+                            <input class="form-control" id="new-record-ttl" type="input" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"
+                                disabled value="60">
                         </div>
                     </form>
+                    <button type="button" class="btn btn-primary sk-mt-4 sk-mr-2">Submit</button>
+                    <button type="button" class="btn btn-secondary sk-mt-4" data-dismiss="modal" aria-label="Close">Cancel</button>
                 </div>
             </div>
         </div>
