@@ -2,7 +2,7 @@ let gulp = require('gulp');
 let babel = require('gulp-babel');
 let autoprefixer = require('gulp-autoprefixer');
 let cleanCSS = require('gulp-clean-css');
-let uglify = require('gulp-uglify');
+let uglify = require('gulp-uglify-es').default;
 let rename = require("gulp-rename");
 let htmlmin = require("gulp-htmlmin");
 let htmlclean = require("gulp-htmlclean");
@@ -27,9 +27,6 @@ var configs = {
 
 function minifyJS() {
     return gulp.src('src/**/*.js')
-        .pipe(babel({
-            presets: ['env']
-        }))
         .pipe(uglify({
             output: {
                 comments: /^!/
