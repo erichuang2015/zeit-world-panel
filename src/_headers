@@ -1,0 +1,10 @@
+/*
+  X-Frame-Options: DENY
+  X-XSS-Protection: 1; mode=block
+  Cache-Control: public, max-age=30, s-max-age=60, stale-if-error=3
+
+/*.js
+  Cache-Control: public, max-age=600, s-max-age=1200, stale-if-error=3
+
+/*.css
+  Cache-Control: public, max-age=600, s-max-age=1200, stale-if-error=3
