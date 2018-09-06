@@ -79,7 +79,9 @@
         <div class="card sk-mt-8 sk-mb-4 sk-no-border sk-shadow-2">
             <div class="card-body">
                 <h2 class="h4 card-title">Nameservers</h2>
-                <p class="sk-text-dark">To use ZEIT World DNS, you need to point your domains to ZEIT Nameservers. Go to your domain registrar and change your domain's nameservers to the following custom hostnames assigned to your DNS zone.</p>
+                <p class="sk-text-dark">To use ZEIT World DNS, you need to point your domains to ZEIT Nameservers. Go to
+                    your domain registrar and change your domain's nameservers to the following custom hostnames assigned
+                    to your DNS zone.</p>
                 <table class="table record-ns-list table-borderless sk-mb-0">
                     <thead>
                         <tr>
@@ -121,6 +123,14 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+
+        <div class="card sk-mt-8 sk-mb-4 sk-no-border sk-shadow-2">
+            <div class="card-body">
+                <h2 class="h4 card-title">Delete this Zone</h2>
+                <p class="card-text"><strong><span class="sk-text-error">This action is irreversible!</span> All records under this domain will be deleted and can't be recovered!</strong></p>
+                <button type="button" class="btn btn-danger" id="record-del-btn" onclick="confirmDeleteDomain(this)">Delete this Zone</button>
             </div>
         </div>
     </div>
@@ -202,6 +212,7 @@
     <script src="/index.js"></script>
     <script>
         getCurrentDomain();
+        setAttrDeleteBtn();
         toggleMXPriority();
         getRecordList();
     </script>

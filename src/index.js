@@ -102,7 +102,7 @@ function getDomainList() {
                     <td class="sk-text-bold"><a href="/record/?domain=${value.name}">${value.name}</a></td>
                     <td>${value.serviceType}</td>
                     <td>
-                    <button type="button" class="btn btn-link sk-p-0" data-id="${value.name}" data-type="${value.type}" id="${value.name}-del-btn" onclick="confirmDeleteDomain(this)">
+                    <button type="button" class="btn btn-link sk-p-0" data-id="${value.name}" id="${value.name}-del-btn" onclick="confirmDeleteDomain(this)">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                             <path fill="none" d="M0 0h24v24H0V0z" />
                             <path fill="#e85600" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/>
@@ -178,8 +178,8 @@ function newDomain() {
 
 function confirmDeleteDomain(el) {
     var domainWillBeleted = el.getAttribute("data-id");
-    $('#msg-title').html('<span class="sk-text-bold text-danger">ATTENTION!!</span>')
-    $('#msg-body').html('<span class="sk-text-bold">Domain <span class="text-info">' + domainWillBeleted + '</span> will be deleted!</span><br>Are you sure you want to delele this domain? All records belong to this domain will be deleted and can\'t be recovered!!' + '<br><button type="button" class="btn btn-danger sk-mt-4 sk-mr-2" onclick="deleteDomain(\'' + domainWillBeleted + '\')">Confirm</button><button type="button" class="btn btn-secondary sk-mt-4" data-dismiss="modal" aria-label="Close">Cancel</button>')
+    $('#msg-title').html('<span class="sk-text-bold text-danger">ATTENTION!! This action is irreversible!</span>')
+    $('#msg-body').html('<span class="sk-text-bold">Domain <span class="text-info">' + domainWillBeleted + '</span> will be deleted!</span><br>Are you sure you want to delele this domain? All records under this domain will be lost and can\'t be recovered!!' + '<br><button type="button" class="btn btn-danger sk-mt-4 sk-mr-2" onclick="deleteDomain(\'' + domainWillBeleted + '\')">Confirm</button><button type="button" class="btn btn-secondary sk-mt-4" data-dismiss="modal" aria-label="Close">Cancel</button>')
     $('#msg').modal()
 }
 
@@ -342,7 +342,7 @@ function confirmDeleteRecord(el) {
     var recordWillDeleted = el.getAttribute("data-id");
     var recordDomainWillDeleted = el.getAttribute("data-name");
     var recordTypeWillDeleted = el.getAttribute("data-type");
-    $('#msg-title').html('<span class="sk-text-bold text-danger">ATTENTION!!</span>')
+    $('#msg-title').html('<span class="sk-text-bold text-danger">ATTENTION!! This action is irreversible!</span>')
     $('#msg-body').html('<span class="sk-text-bold">Are you sure you want to delele the <span class="text-info">' + recordTypeWillDeleted + '</span> record?</span><br><span class="sk-text-bold text-primary">' + recordDomainWillDeleted + '</span>' + '<br><button type="button" class="btn btn-danger sk-mt-4 sk-mr-2" onclick="deleteRecord(\'' + recordWillDeleted + '\')">Confirm</button><button type="button" class="btn btn-secondary sk-mt-4" data-dismiss="modal" aria-label="Close">Cancel</button>')
     $('#msg').modal()
 }
@@ -465,4 +465,13 @@ function submitNewRecord() {
             }
         });
     }
+}
+
+/*
+ * setAttrDeleteBtn()
+ * Used only at record list page
+ */
+/*     var domainWillBeleted = el.getAttribute("data-id"); */
+function setAttrDeleteBtn() {
+    document.getElementById('record-del-btn').setAttribute('data-id', currentDomain.domain);
 }

@@ -107,7 +107,15 @@ html *::-webkit-scrollbar-thumb {
     margin-left: 0;
 }
 
-
 .break-all {
     word-break: break-all;
+}
+
+.record-ns-list td,
+.record-ns-list th {
+    padding: .3rem
+}
+
+.record-ns-list td {
+    color: #666
 }
