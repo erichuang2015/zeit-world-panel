@@ -59,11 +59,11 @@ function loginSubmit() {
     setLS('token', loginKey);
     setLS('username', loginUsername);
     $('#msg-title').html('Logging in')
-    $('#msg-body').html('You will be redirected to Zone List Page in about 2 seconds...')
+    $('#msg-body').html('You will be redirected to Zone List Page in about 5 seconds...')
     $('#msg').modal()
     setTimeout(function () {
         window.location.href = "/zone/"
-    }, 2000)
+    }, 5000)
 }
 
 /*
@@ -79,7 +79,7 @@ function logout() {
     $('#msg').modal()
     setTimeout(function () {
         window.location.href = "/"
-    }, 2000)
+    }, 3000)
 }
 
 /*
@@ -102,6 +102,12 @@ function getDomainList() {
                     <td class="sk-text-bold"><a href="/record/?domain=${value.name}">${value.name}</a></td>
                     <td>${value.serviceType}</td>
                     <td>
+                    <a class="btn btn-link sk-p-0" href="/record/?domain=${value.name}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path fill="#00ad9f" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        </svg>
+                    </a>
                     <button type="button" class="btn btn-link sk-p-0" data-id="${value.name}" id="${value.name}-del-btn" onclick="confirmDeleteDomain(this)">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                             <path fill="none" d="M0 0h24v24H0V0z" />
@@ -109,12 +115,6 @@ function getDomainList() {
                             <path fill="none" d="M0 0h24v24H0z" />
                         </svg>
                     </button>
-                    <a class="btn btn-link sk-p-0" href="/record/?domain=${value.name}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                            <path fill="#00ad9f" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-                            <path d="M0 0h24v24H0z" fill="none"/>
-                        </svg>
-                    </a>
                     </td>
                     <td>${new Date(value.created).toLocaleDateString()}</td>
                 </tr>
@@ -150,7 +150,10 @@ function newDomain() {
         type: "POST",
         url: "https://api.zeit.co/v2/domains",
         dataType: "json",
-        data: "{\"name\":\"" + newdomain + "\",\"serviceType\":\"zeit.world\"}",
+        data: JSON.stringify({
+            name: newdomain,
+            serviceType: "zeit.world"
+        }),
         success: function (data) {
             $('#msg-title').html('<span class=\"text-info\">' + newdomain + '</span> added successfully')
             $('#msg-body').html('The page will be refreshed in 5 second')
@@ -184,6 +187,9 @@ function confirmDeleteDomain(el) {
 }
 
 function deleteDomain(domain) {
+    $('#msg-title').html('Deleting domain <span class="text-info">' + domain + '</span>')
+    $('#msg-body').html('Please sit and relax...')
+    $('#msg').modal()
     $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
     $.ajax({
         url: 'https://api.zeit.co/v2/domains/' + domain,
@@ -343,11 +349,14 @@ function confirmDeleteRecord(el) {
     var recordDomainWillDeleted = el.getAttribute("data-name");
     var recordTypeWillDeleted = el.getAttribute("data-type");
     $('#msg-title').html('<span class="sk-text-bold text-danger">ATTENTION!! This action is irreversible!</span>')
-    $('#msg-body').html('<span class="sk-text-bold">Are you sure you want to delele the <span class="text-info">' + recordTypeWillDeleted + '</span> record?</span><br><span class="sk-text-bold text-primary">' + recordDomainWillDeleted + '</span>' + '<br><button type="button" class="btn btn-danger sk-mt-4 sk-mr-2" onclick="deleteRecord(\'' + recordWillDeleted + '\')">Confirm</button><button type="button" class="btn btn-secondary sk-mt-4" data-dismiss="modal" aria-label="Close">Cancel</button>')
+    $('#msg-body').html('<span class="sk-text-bold">Are you sure you want to delele the <span class="text-info">' + recordTypeWillDeleted + '</span> record?</span><br><span class="sk-text-bold text-primary">' + recordDomainWillDeleted + '</span>' + '<br><button type="button" class="btn btn-danger sk-mt-4 sk-mr-2" onclick="deleteRecord(\'' + recordWillDeleted + '\',\''+ recordTypeWillDeleted +'\')">Confirm</button><button type="button" class="btn btn-secondary sk-mt-4" data-dismiss="modal" aria-label="Close">Cancel</button>')
     $('#msg').modal()
 }
 
-function deleteRecord(id) {
+function deleteRecord(id, type) {
+    $('#msg-title').html('Deleting <span class="text-info">' + type + '</span> record')
+    $('#msg-body').html('Please ait and relax...')
+    $('#msg').modal()
     $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
     $.ajax({
         url: 'https://api.zeit.co/v2/domains/' + currentDomain.domain + '/records/' + id,
@@ -394,14 +403,14 @@ function toggleMXPriority() {
  */
 
 function submitNewRecord() {
-    $('#new-record').modal('hide')
-    $('#msg-title').html('Adding new record')
-    $('#msg-body').html('Please sit and relax...')
-    $('#msg').modal()
     var newRecordName = $('#new-record-name').val();
     var newRecordType = $('#new-record-type').val();
     var newRecordMXPriority = $('#new-record-mx-priority').val();
     var newRecordValue = $('#new-record-value').val();
+    $('#new-record').modal('hide')
+    $('#msg-title').html('Adding new <span class="text-info">' + newRecordType + '</span> record')
+    $('#msg-body').html('Please sit and relax...')
+    $('#msg').modal()
     $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
     if (newRecordName === "@") {
         newRecordName = "";
