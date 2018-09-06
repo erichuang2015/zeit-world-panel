@@ -11,6 +11,7 @@
 
 var apikey = localStorage.getItem('token');
 var username = localStorage.getItem('username');
+var apiendpoint = localStorage.getItem('api');
 
 /*
  * localStorage Helper
@@ -30,7 +31,7 @@ function setLS(key, value) {
  */
 
 $(document).ready(function () {
-    if ((!apikey || !username) && (window.location.pathname !== "/")) {
+    if ((!apikey || !username || !apiendpoint) && (window.location.pathname !== "/")) {
         $('#msg-title').html('Redirecting...')
         $('#msg-body').html('You haven\'t fill in your Token or Username! Redirecting to login page in about 5 seconds...')
         $('#msg').modal()
@@ -38,7 +39,7 @@ $(document).ready(function () {
             window.location.href = "/"
         }, 4000)
     };
-    if (apikey && username && (window.location.pathname === "/")) {
+    if (apikey && username && apiendpoint && (window.location.pathname === "/")) {
         $('#msg-title').html('Redirecting...')
         $('#msg-body').html('You have already logged in! Redirecting to Zone List Page in about 5 seconds...')
         $('#msg').modal()
@@ -56,8 +57,10 @@ $(document).ready(function () {
 function loginSubmit() {
     var loginUsername = document.getElementById('login-username').value;
     var loginKey = document.getElementById('login-token').value;
+    var apiEndpoint = document.getElementById('login-api').value;
     setLS('token', loginKey);
     setLS('username', loginUsername);
+    setLS('api', apiEndpoint);
     $('#msg-title').html('Logging in')
     $('#msg-body').html('You will be redirected to Zone List Page in about 5 seconds...')
     $('#msg').modal()
@@ -92,7 +95,7 @@ function getDomainList() {
     $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
     $.ajax({
         type: "GET",
-        url: "https://api.zeit.co/v2/domains",
+        url: apiendpoint + "/v2/domains",
         dataType: "json",
         success: function (data) {
             $.each(data.domains, function (index, value) {
@@ -147,8 +150,8 @@ function newDomain() {
     $('#msg').modal()
     $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
     $.ajax({
-        type: "POST",
-        url: "https://api.zeit.co/v2/domains",
+        type: 'POST',
+        url: apiendpoint + "/v2/domains",
         dataType: "json",
         data: JSON.stringify({
             name: newdomain,
@@ -192,7 +195,7 @@ function deleteDomain(domain) {
     $('#msg').modal()
     $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
     $.ajax({
-        url: 'https://api.zeit.co/v2/domains/' + domain,
+        url: apiendpoint + '/v2/domains/' + domain,
         type: 'DELETE',
         data: {},
         success: function (data) {
@@ -247,7 +250,7 @@ function getRecordList() {
     $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
 
     $.ajax({
-        url: 'https://api.zeit.co/v2/domains/' + currentDomain.domain + '/records',
+        url: apiendpoint + '/v2/domains/' + currentDomain.domain + '/records',
         type: 'GET',
         data: {},
         success: function (data) {
@@ -359,7 +362,7 @@ function deleteRecord(id, type) {
     $('#msg').modal()
     $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
     $.ajax({
-        url: 'https://api.zeit.co/v2/domains/' + currentDomain.domain + '/records/' + id,
+        url: apiendpoint + '/v2/domains/' + currentDomain.domain + '/records/' + id,
         type: 'DELETE',
         data: {},
         success: function (data) {
@@ -417,8 +420,8 @@ function submitNewRecord() {
     }
     if (newRecordType === "MX") {
         $.ajax({
-            type: "POST",
-            url: "https://api.zeit.co/v2/domains/" + currentDomain.domain + "/records",
+            type: 'POST',
+            url: apiendpoint + "/v2/domains/" + currentDomain.domain + "/records",
             dataType: "json",
             contentType: "application/json",
             data: JSON.stringify({
@@ -447,10 +450,10 @@ function submitNewRecord() {
         });
     } else {
         $.ajax({
-            type: "POST",
-            url: "https://api.zeit.co/v2/domains/" + currentDomain.domain + "/records",
-            dataType: "json",
-            contentType: "application/json",
+            type: 'POST',
+            url: apiendpoint + '/v2/domains/' + currentDomain.domain + '/records',
+            dataType: 'json',
+            contentType: 'application/json',
             data: JSON.stringify({
                 name: newRecordName,
                 type: newRecordType,
