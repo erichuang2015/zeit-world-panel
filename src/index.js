@@ -91,6 +91,9 @@ function logout() {
  */
 
 function getDomainList() {
+    $('#msg-title').html('Loading domain list')
+    $('#msg-body').html('Please sit and relax...')
+    $('#msg').modal()
     var domainNum = 0;
     $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
     $.ajax({
@@ -126,6 +129,7 @@ function getDomainList() {
                 domainNum = domainNum + 1;
                 $("#list-domain-num").html(domainNum)
             });
+            $('#msg').modal('hide');
         },
         error: function (data) {
             $('#msg-title').html('Something wrong happened')
