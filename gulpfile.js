@@ -1,5 +1,4 @@
 let gulp = require('gulp');
-let babel = require('gulp-babel');
 let autoprefixer = require('gulp-autoprefixer');
 let cleanCSS = require('gulp-clean-css');
 let uglify = require('gulp-uglify-es').default;
