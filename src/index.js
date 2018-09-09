@@ -262,6 +262,7 @@ function getRecordList() {
         type: 'GET',
         data: {},
         success: function (data) {
+            $('#msg').modal('hide')
             $.each(data.records, function (index, value) {
                 recordNum = recordNum + 1
 
@@ -327,7 +328,6 @@ function getRecordList() {
             });
             showRecordInfo();
             $("#record-list-num").html(recordNum);
-            $('#msg').modal('hide');
         },
         error: function (data) {
             $('#msg-title').html('Something wrong happened')
