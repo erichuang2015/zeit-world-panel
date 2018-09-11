@@ -101,6 +101,7 @@ function getDomainList() {
         url: apiendpoint + "/v2/domains",
         dataType: "json",
         success: function (data) {
+            $('#msg').modal('hide');
             $.each(data.domains, function (index, value) {
                 $("#list-no-domain").addClass("sk-hide");
                 var html = baidu.template('domain-item-tpl', value);
@@ -108,7 +109,6 @@ function getDomainList() {
                 domainNum = domainNum + 1;
                 $("#list-domain-num").html(domainNum)
             });
-            $('#msg').modal('hide');
         },
         error: function (data) {
             $('#msg-title').html('Something wrong happened')
