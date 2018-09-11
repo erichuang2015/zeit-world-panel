@@ -13,10 +13,6 @@ var apikey = localStorage.getItem('token');
 var username = localStorage.getItem('username');
 var apiendpoint = localStorage.getItem('api');
 
-var msgModal = new Modal({
-    el: document.getElementById('msg')
-});
-
 var msgTitleEl = document.getElementById('msg-title');
 var msgBodyEl = document.getElementById('msg-body');
 
