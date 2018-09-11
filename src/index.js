@@ -30,7 +30,7 @@ function setLS(key, value) {
  * If not then redirect them to login page
  */
 
-$(document).ready(function () {
+window.onload = function () {
     if ((!apikey || !username || !apiendpoint) && (window.location.pathname !== "/")) {
         $('#msg-title').html('Redirecting...')
         $('#msg-body').html('You haven\'t fill in your Token or Username! Redirecting to login page in about 5 seconds...')
@@ -47,7 +47,7 @@ $(document).ready(function () {
             window.location.href = "/zone/"
         }, 4000)
     }
-});
+};
 
 /*
  * loginSubmit()
