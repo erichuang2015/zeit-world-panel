@@ -110,11 +110,11 @@ function getDomainList() {
         success: function (data) {
             $('#msg').modal('hide');
             $.each(data.domains, function (index, value) {
-                $("#list-no-domain").addClass("sk-hide");
+                document.getElementById('list-no-domain').classList.add("sk-hide");
                 var html = baidu.template('domain-item-tpl', value);
-                $("#domainListBody").append(html);
+                document.getElementById('domainListBody').insertAdjacentHTML('beforeend', html);
                 domainNum = domainNum + 1;
-                $("#list-domain-num").html(domainNum)
+                document.getElementById('list-domain-num').innerHTML = domainNum;
             });
         },
         error: function (data) {
@@ -237,8 +237,8 @@ function getCurrentDomain() {
  * Used at record list page
  */
 function getRecordList() {
-    $('#msg-title').html('Loading records of <span class="text-info">' + searchQuery.domain + '</span>')
-    $('#msg-body').html('Please sit and relax...')
+    msgTitleEl.innerHTML = 'Loading records of <span class="text-info">' + searchQuery.domain + '</span>';
+    msgBodyEl.innerHTML = 'Please sit and relax...';
     $('#msg').modal()
     var recordNum = 0
     $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
@@ -271,10 +271,10 @@ function getRecordList() {
                 }
 
                 var html = baidu.template('record-item-tpl', value);
-                $("#recordListBody").prepend(html);
+                document.getElementById('recordListBody').insertAdjacentHTML('afterbegin', html);
             });
             showRecordInfo();
-            $("#record-list-num").html(recordNum);
+            document.getElementById('record-list-num').innerHTML = recordNum;
         },
         error: function (data) {
             msgTitleEl.innerHTML = 'Something wrong happened';
@@ -347,12 +347,12 @@ function deleteRecord(id, type) {
  */
 
 function toggleMXPriority() {
-    $('#new-record-mx-priority-group').css({ display: "none" });
+    document.getElementById('new-record-mx-priority-group').style.display = 'none';
     $('#new-record-type').on('change', function () {
-        if ($('#new-record-type').val() === "MX") {
-            $('#new-record-mx-priority-group').css({ display: "block" });
+        if (document.getElementById('new-record-type').value === "MX") {
+            document.getElementById('new-record-mx-priority-group').style.display = 'block';
         } else {
-            $('#new-record-mx-priority-group').css({ display: "none" });
+            document.getElementById('new-record-mx-priority-group').style.display = 'none';
         }
     });
 }
@@ -363,10 +363,10 @@ function toggleMXPriority() {
  */
 
 function submitNewRecord() {
-    var newRecordName = $('#new-record-name').val();
-    var newRecordType = $('#new-record-type').val();
-    var newRecordMXPriority = $('#new-record-mx-priority').val();
-    var newRecordValue = $('#new-record-value').val();
+    var newRecordName = document.getElementById('new-record-name').value;
+    var newRecordType = document.getElementById('new-record-type').value;
+    var newRecordMXPriority = document.getElementById('new-record-mx-priority').value;
+    var newRecordValue = document.getElementById('new-record-value').value;
     $('#new-record').modal('hide')
     msgTitleEl.innerHTML = 'Adding new <span class="text-info">' + newRecordType + '</span> record';
     msgBodyEl.innerHTML = 'Please sit and relax...';
@@ -442,5 +442,5 @@ function submitNewRecord() {
  */
 /*     var domainWillBeleted = el.getAttribute("data-id"); */
 function setAttrDeleteBtn() {
-    document.getElementById('record-del-btn').setAttribute('data-id', searchQuery.domain);
+    document.getElementById('domain-del-btn').setAttribute('data-id', searchQuery.domain);
 }
