@@ -13,6 +13,10 @@ var apikey = localStorage.getItem('token');
 var username = localStorage.getItem('username');
 var apiendpoint = localStorage.getItem('api');
 
+var msgModal = new Modal({
+    el: document.getElementById('msg')
+});
+
 /*
  * localStorage Helper
  */
@@ -32,7 +36,7 @@ function setLS(key, value) {
 
 window.onload = function () {
     if ((!apikey || !username || !apiendpoint) && (window.location.pathname !== "/")) {
-        $('#msg-title').html('Redirecting...')
+        document.getElementById('msg-title').innerHTML = 'Redirecting...';
         $('#msg-body').html('You haven\'t fill in your Token or Username! Redirecting to login page in about 5 seconds...')
         $('#msg').modal()
         setTimeout(function () {
@@ -40,7 +44,7 @@ window.onload = function () {
         }, 4000)
     };
     if (apikey && username && apiendpoint && (window.location.pathname === "/")) {
-        $('#msg-title').html('Redirecting...')
+        document.getElementById('msg-title').innerHTML = 'Redirecting...';
         $('#msg-body').html('You have already logged in! Redirecting to Zone List Page in about 5 seconds...')
         $('#msg').modal()
         setTimeout(function () {
