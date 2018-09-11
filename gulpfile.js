@@ -52,6 +52,7 @@ function minifyHTML() {
             minifyJS: true,
             minifyCSS: true,
             collapseWhitespace: true,
+            processScripts: ["text/html"]
         }))
         .pipe(htmlclean())
         .pipe(gulp.dest('dist'))

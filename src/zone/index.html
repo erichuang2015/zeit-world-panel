@@ -11,7 +11,7 @@
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/suka.css@0.2.0">
-    <link rel="stylesheet" href="/style.min.css">
+    <link rel="stylesheet" href="/style.css">
 </head>
 
 <body class="sk-bg-gray sk-pb-8">
@@ -23,8 +23,8 @@
             </h1>
 
             <div class="mr-auto"></div>
-            <button class="navbar-toggler sk-text-dark" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler sk-text-dark" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                     <path d="M0 0h24v24H0z" fill="none" />
                     <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
@@ -37,10 +37,12 @@
                         <a class="nav-link sk-text-dark sk-text-bold" href="#" onclick="logout()">Logout</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link sk-text-dark" href="https://github.com/SukkaW/zeit-world-panel" target="_blank" rel="noreferrer noopenner">GitHub</a>
+                        <a class="nav-link sk-text-dark" href="https://github.com/SukkaW/zeit-world-panel" target="_blank"
+                            rel="noreferrer noopenner">GitHub</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link sk-text-dark" href="https://zeit.co/api#endpoints/domains" target="_blank" rel="noreferrer noopenner">API</a>
+                        <a class="nav-link sk-text-dark" href="https://zeit.co/api#endpoints/domains" target="_blank"
+                            rel="noreferrer noopenner">API</a>
                     </li>
                 </ul>
             </div>
@@ -70,9 +72,8 @@
                 </thead>
                 <tbody id="domainListBody">
                     <tr>
-                        <td class="sk-text-center sk-text-gray sk-text-bold" id="list-no-domain" colspan="4">NO DOMAIN TO
-                            SHOW
-                        </td>
+                        <td class="sk-text-center sk-text-gray sk-text-bold" id="list-no-domain" colspan="4">NO DOMAIN
+                            TO SHOW</td>
                     </tr>
                 </tbody>
             </table>
@@ -104,7 +105,8 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Domain</label>
-                        <input type="text" class="form-control" id="new-domain-name" placeholder="Enter your domain" required>
+                        <input type="text" class="form-control" id="new-domain-name" placeholder="Enter your domain"
+                            required>
                     </div>
                     <button class="btn btn-block btn-primary" onclick="newDomain()">Submit</button>
                 </div>
@@ -115,6 +117,28 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bdtpl@1.0.6"></script>
+    <script id="domain-list-tpl" type="text/html">
+        <tr>
+            <td class="sk-text-bold"><a href="/record/?domain=<%= name %>"><%= name %></a></td>
+            <td><%= serviceType %></td>
+            <td>
+            <a class="btn btn-link sk-p-0" href="/record/?domain=<%= name %>">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path fill="#00ad9f" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                <path d="M0 0h24v24H0z" fill="none"/>
+                </svg>
+            </a>
+            <button type="button" class="btn btn-link sk-p-0" data-id="<%= name %>" id="<%= name %>-del-btn" onclick="confirmDeleteDomain(this)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path fill="none" d="M0 0h24v24H0V0z" />
+                    <path fill="#e85600" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/>
+                    <path fill="none" d="M0 0h24v24H0z" />
+                </svg>
+            </button>
+            </td>
+            <td><%= new Date(created).toLocaleDateString() %></td>
+        </tr>
+    </script>
     <script src="/index.js"></script>
     <script>getDomainList()</script>
 </body>
