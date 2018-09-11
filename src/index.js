@@ -103,29 +103,8 @@ function getDomainList() {
         success: function (data) {
             $.each(data.domains, function (index, value) {
                 $("#list-no-domain").addClass("sk-hide");
-                /*
-                <tr>
-                    <td class="sk-text-bold"><a href="/record/?domain=${value.name}">${value.name}</a></td>
-                    <td>${value.serviceType}</td>
-                    <td>
-                    <a class="btn btn-link sk-p-0" href="/record/?domain=${value.name}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                            <path fill="#00ad9f" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-                        <path d="M0 0h24v24H0z" fill="none"/>
-                        </svg>
-                    </a>
-                    <button type="button" class="btn btn-link sk-p-0" data-id="${value.name}" id="${value.name}-del-btn" onclick="confirmDeleteDomain(this)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                            <path fill="none" d="M0 0h24v24H0V0z" />
-                            <path fill="#e85600" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/>
-                            <path fill="none" d="M0 0h24v24H0z" />
-                        </svg>
-                    </button>
-                    </td>
-                    <td>${new Date(value.created).toLocaleDateString()}</td>
-                </tr>
-                */
-                $("#domainListBody").append(`<tr><td class="sk-text-bold"><a href="/record/?domain=${value.name}">${value.name}</a></td><td>${value.serviceType}</td><td><a class="btn btn-link sk-p-0" href="/record/?domain=${value.name}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#00ad9f" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/><path d="M0 0h24v24H0z" fill="none"/></svg></a><button type="button" class="btn btn-link sk-p-0" data-id="${value.name}" id="${value.name}-del-btn" onclick="confirmDeleteDomain(this)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z" /><path fill="#e85600" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/><path fill="none" d="M0 0h24v24H0z" /></svg></button></td><td>${new Date(value.created).toLocaleDateString()}</td></tr>`);
+                var html = baidu.template('domain-item-tpl', value);
+                $("#domainListBody").append(html);
                 domainNum = domainNum + 1;
                 $("#list-domain-num").html(domainNum)
             });
@@ -262,69 +241,30 @@ function getRecordList() {
         type: 'GET',
         data: {},
         success: function (data) {
-            $('#msg').modal('hide')
+            $('#msg').modal('hide');
             $.each(data.records, function (index, value) {
                 recordNum = recordNum + 1
 
                 if (value.name.length === 0) {
-                    var recordName = "@"
+                    value.recordName = "@"
                 } else {
-                    var recordName = value.name
+                    value.recordName = value.name
                 }
 
                 if (value.name.length === 0) {
-                    var recordDomain = searchQuery.domain
+                    value.recordDomain = searchQuery.domain
                 } else {
-                    var recordDomain = value.name + "." + searchQuery.domain
+                    value.recordDomain = value.name + "." + searchQuery.domain
                 }
 
                 if (value.mxPriority) {
-                    var recordMxPriority = "<span class=\"sk-pr-2\">" + value.mxPriority + "</span>"
+                    value.recordMxPriority = "<span class=\"sk-pr-2\">" + value.mxPriority + "</span>"
                 } else {
-                    var recordMxPriority = ""
+                    value.recordMxPriority = ""
                 }
-                /*
-                <tr class="record-main">
-                    <td>${recordName}</td>
-                    <td>60</td>
-                    <td>IN</td>
-                    <td>${value.type}</td>
-                    <td>${recordMxPriority}${value.value}</td>
-                    <td>
-                        <button type="button" class="btn btn-link sk-p-0" data-id="${value.id}" data-type="${value.type}" data-name="${recordDomain}" id="${value.name}-delete" onclick="confirmDeleteRecord(this)">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                <path fill="none" d="M0 0h24v24H0V0z" />
-                                <path fill="#e85600" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/>
-                                <path fill="none" d="M0 0h24v24H0z" />
-                            </svg>
-                        </button>
-                    </td>
-                    <td>
-                        <span class="record-no-select">${new Date(value.updated).toLocaleDateString()}</span>
-                    </td>
-                </tr>
-                <tr class="record-info sk-hide">
-                    <td colspan="7">
-                        <dl>
-                            <dt>Name</dt>
-                            <dd>${recordDomain}</dd>
-                            <dt>TTL</dt>
-                            <dd>60 <span class="sk-text-dark">seconds</span></dd>
-                            <dt>Type</dt>
-                            <dd>${value.type}</dd>
-                            <dt>Value</dt>
-                            <dd class="break-all">${recordMxPriority}${value.value}</dd>
-                            <dt>Created</dt>
-                            <dd>${new Date(value.created).toLocaleDateString()}</dd>
-                            <dt>Updated</dt>
-                            <dd>${new Date(value.updated).toLocaleDateString()}</dd>
-                            <dt>ID</dt>
-                            <dd>${value.id}</dd>
-                        </dl>
-                    </td>
-                </tr>
-                */
-                $("#domainListBody").prepend(`<tr class="record-main"><td>${recordName}</td><td>60</td><td>IN</td><td>${value.type}</td><td>${recordMxPriority}${value.value}</td><td><button type="button" class="btn btn-link sk-p-0" data-id="${value.id}" data-type="${value.type}" data-name="${recordDomain}" id="${value.name}-delete" onclick="confirmDeleteRecord(this)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z" /><path fill="#e85600" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/><path fill="none" d="M0 0h24v24H0z" /></svg></button></td><td><span class="record-no-select">${new Date(value.updated).toLocaleDateString()}</span></td></tr><tr class="record-info sk-hide"><td colspan="7"><dl><dt>Name</dt><dd>${recordDomain}</dd><dt>TTL</dt><dd>60 <span class="sk-text-dark">seconds</span></dd><dt>Type</dt><dd>${value.type}</dd><dt>Value</dt><dd class="break-all">${recordMxPriority}${value.value}</dd><dt>Created</dt><dd>${new Date(value.created).toLocaleDateString()}</dd><dt>Updated</dt><dd>${new Date(value.updated).toLocaleDateString()}</dd><dt>ID</dt><dd>${value.id}</dd></dl></td></tr>`);
+
+                var html = baidu.template('record-item-tpl', value);
+                $("#recordListBody").prepend(html);
             });
             showRecordInfo();
             $("#record-list-num").html(recordNum);
