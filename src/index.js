@@ -268,7 +268,6 @@ function getRecordList() {
             });
             showRecordInfo();
             $("#record-list-num").html(recordNum);
-            $('#msg').modal('hide');
         },
         error: function (data) {
             $('#msg-title').html('Something wrong happened')
