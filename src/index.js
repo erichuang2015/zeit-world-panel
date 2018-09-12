@@ -280,45 +280,39 @@ function getRecordList() {
         content: 'Please sit and relax...'
     });
     var recordNum = 0
-    $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
 
-    $.ajax({
-        url: apiendpoint + '/v2/domains/' + searchQuery.domain + '/records',
-        type: 'GET',
-        data: {},
-        success: function (data) {
-            $('#msg').modal('hide');
-            data.records.forEach((value, index) => {
-                recordNum = recordNum + 1
+    get(apiendpoint + '/v2/domains/' + searchQuery.domain + '/records').then(json => {
+        $('#msg').modal('hide');
+        json.records.forEach((value, index) => {
+            recordNum = recordNum + 1
 
-                if (value.name.length === 0) {
-                    value.recordName = "@"
-                } else {
-                    value.recordName = value.name
-                }
+            if (value.name.length === 0) {
+                value.recordName = "@"
+            } else {
+                value.recordName = value.name
+            }
 
-                if (value.name.length === 0) {
-                    value.recordDomain = searchQuery.domain
-                } else {
-                    value.recordDomain = value.name + "." + searchQuery.domain
-                }
+            if (value.name.length === 0) {
+                value.recordDomain = searchQuery.domain
+            } else {
+                value.recordDomain = value.name + "." + searchQuery.domain
+            }
 
-                if (value.mxPriority) {
-                    value.recordMxPriority = "<span class=\"sk-pr-2\">" + value.mxPriority + "</span>"
-                } else {
-                    value.recordMxPriority = ""
-                }
+            if (value.mxPriority) {
+                value.recordMxPriority = "<span class=\"sk-pr-2\">" + value.mxPriority + "</span>"
+            } else {
+                value.recordMxPriority = ""
+            }
 
-                var html = baidu.template('record-item-tpl', value);
-                document.getElementById('recordListBody').insertAdjacentHTML('afterbegin', html);
-            });
-            showRecordInfo();
-            document.getElementById('record-list-num').innerHTML = recordNum;
-        },
-        error: function (data) {
-            outputError(data.responseText);
-        }
+            var html = baidu.template('record-item-tpl', value);
+            document.getElementById('recordListBody').insertAdjacentHTML('afterbegin', html);
+        });
+        showRecordInfo();
+        document.getElementById('record-list-num').innerHTML = recordNum;
+    }).catch(error => {
+        outputError(error);
     });
+
 }
 
 /*
@@ -353,22 +347,18 @@ function deleteRecord(id, type) {
         title: 'Deleting <span class="text-info">' + type + '</span> record',
         content: 'Please ait and relax...'
     });
-    $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
-    $.ajax({
-        url: apiendpoint + '/v2/domains/' + searchQuery.domain + '/records/' + id,
-        type: 'DELETE',
-        data: {},
-        success: function (data) {
+
+    _delete(apiendpoint + '/v2/domains/' + searchQuery.domain + '/records/' + id, JSON.stringify({}))
+        .then(json => {
             msgModal({
                 title: 'Successfully deleted!',
                 content: 'The page will be refreshed in 5 second'
             });
             refreshPage(5000);
-        },
-        error: function (data) {
-            outputError(data.responseText);
-        }
-    });
+        })
+        .catch(error => {
+            outputError(error);
+        });
 }
 
 /*
@@ -402,56 +392,36 @@ function submitNewRecord() {
         title: 'Adding new <span class="text-info">' + newRecordType + '</span> record',
         content: 'Please ait and relax...'
     });
-    $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
+
     if (newRecordName === "@") {
         newRecordName = "";
     }
     if (newRecordType === "MX") {
-        $.ajax({
-            type: 'POST',
-            url: apiendpoint + "/v2/domains/" + searchQuery.domain + "/records",
-            dataType: "json",
-            contentType: "application/json",
-            data: JSON.stringify({
-                name: newRecordName,
-                type: newRecordType,
-                mxPriority: parseInt(newRecordMXPriority),
-                value: newRecordValue
-            }),
-            success: function (data) {
-                msgModal({
-                    title: 'New record successfully added!',
-                    content: 'The page will be refreshed in 5 second.'
-                });
-                refreshPage(5000);
-            },
-            error: function (data) {
-                outputError(data.responseText);
-            }
+        var data = JSON.stringify({
+            name: newRecordName,
+            type: newRecordType,
+            mxPriority: parseInt(newRecordMXPriority),
+            value: newRecordValue
         });
     } else {
-        $.ajax({
-            type: 'POST',
-            url: apiendpoint + '/v2/domains/' + searchQuery.domain + '/records',
-            dataType: 'json',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                name: newRecordName,
-                type: newRecordType,
-                value: newRecordValue
-            }),
-            success: function (data) {
-                msgModal({
-                    title: 'New record successfully added!',
-                    content: 'The page will be refreshed in 5 second.'
-                });
-                refreshPage(5000);
-            },
-            error: function (data) {
-                outputError(data.responseText);
-            }
+        var data = JSON.stringify({
+            name: newRecordName,
+            type: newRecordType,
+            value: newRecordValue
         });
     }
+
+    post(apiendpoint + "/v2/domains/" + searchQuery.domain + "/records", data)
+        .then(json => {
+            msgModal({
+                title: 'New record successfully added!',
+                content: 'The page will be refreshed in 5 second.'
+            });
+            refreshPage(5000);
+        })
+        .catch(error => {
+            outputError(error);
+        });
 }
 
 /*
