@@ -34,48 +34,6 @@ function refreshPage(second) {
     }, second)
 }
 
-/*
- * Fetch helper
- */
-
-get = (url) =>
-    fetch(url, {
-        method: 'GET',
-    }).then(resp => Promise.all([resp.ok, resp.status, resp.json()])
-    ).then(([ok, status, json]) => {
-        if (ok) {
-            return json;
-        } else {
-            this.handleError(status, json.error);
-            throw new Error(json.error);
-        }
-    }).catch(error => {
-        throw error;
-    });
-
-post = (url, body) => this._request(url, body, 'POST');
-
-put = (url, body) => this._request(url, body, 'PUT');
-
-_delete = (url, body) => this._request(url, body, 'DELETE');
-
-_request = (url, body, method) =>
-    fetch(url, {
-        method: method,
-        body: JSON.stringify(body)
-    }).then(resp => {
-        return Promise.all([resp.ok, resp.status, resp.json()]);
-    }).then(([ok, status, json]) => {
-        if (ok) {
-            return json;
-        } else {
-            this.handleError(status, json.error);
-            throw new Error(json.error);
-        }
-    }).catch(error => {
-        throw error;
-    });
-
 function msgModal(option) {
     document.getElementById('msg-title').innerHTML = option.title;
     document.getElementById('msg-body').innerHTML = option.content;
@@ -90,7 +48,53 @@ function outputError(data) {
     refreshPage(5000);
 }
 
+/*
+ * Fetch helper
+ */
 
+get = (url) =>
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Authorization': username + ' ' + apikey,
+            'Content-Type': 'application/json'
+        }
+    }).then(resp => Promise.all([resp.ok, resp.status, resp.json()])
+    ).then(([ok, status, json]) => {
+        if (ok) {
+            return json;
+        } else {
+            throw new Error(JSON.stringify(json.error));
+        }
+    }).catch(error => {
+        throw error;
+    });
+
+post = (url, body) => this._request(url, body, 'POST');
+
+put = (url, body) => this._request(url, body, 'PUT');
+
+_delete = (url, body) => this._request(url, body, 'DELETE');
+
+_request = (url, body, method) =>
+    fetch(url, {
+        method: method,
+        body: body,
+        headers: {
+            'Authorization': username + ' ' + apikey,
+            'content-type': 'application/json'
+        }
+    }).then(resp => {
+        return Promise.all([resp.ok, resp.status, resp.json()]);
+    }).then(([ok, status, json]) => {
+        if (ok) {
+            return json;
+        } else {
+            throw new Error(JSON.stringify(json.error));
+        }
+    }).catch(error => {
+        throw error;
+    });
 
 /*
  * Check whether user has already login or not
@@ -167,26 +171,21 @@ function getDomainList() {
         title: 'Loading domain list',
         content: 'Please sit and relax...'
     });
-    var domainNum = 0;
-    $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
-    $.ajax({
-        type: "GET",
-        url: apiendpoint + "/v2/domains",
-        dataType: "json",
-        success: function (data) {
-            $('#msg').modal('hide');
-            data.domains.forEach((value, index) => {
-                document.getElementById('list-no-domain').classList.add("sk-hide");
-                var html = baidu.template('domain-item-tpl', value);
-                document.getElementById('domainListBody').insertAdjacentHTML('beforeend', html);
-                domainNum = domainNum + 1;
-                document.getElementById('list-domain-num').innerHTML = domainNum;
-            });
-        },
-        error: function (data) {
-            outputError(data.responseText);
-        }
+
+    get(apiendpoint + "/v2/domains").then(json => {
+        $('#msg').modal('hide');
+        var domainNum = 0;
+        json.domains.forEach((value, index) => {
+            document.getElementById('list-no-domain').classList.add("sk-hide");
+            var html = baidu.template('domain-item-tpl', value);
+            document.getElementById('domainListBody').insertAdjacentHTML('beforeend', html);
+            domainNum = domainNum + 1;
+            document.getElementById('list-domain-num').innerHTML = domainNum;
+        });
+    }).catch(error => {
+        outputError(error);
     });
+
 }
 
 /*
@@ -201,26 +200,18 @@ function newDomain() {
         title: 'Adding' + '&nbsp;<span class=\"text-info\">' + newdomain + '</span>',
         content: 'Please sit and relax...'
     });
-    $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
-    $.ajax({
-        type: 'POST',
-        url: apiendpoint + "/v2/domains",
-        dataType: "json",
-        data: JSON.stringify({
-            name: newdomain,
-            serviceType: "zeit.world"
-        }),
-        success: function (data) {
+    var data = JSON.stringify({ name: newdomain, serviceType: "zeit.world" });
+    post(apiendpoint + "/v2/domains", data)
+        .then(json => {
             msgModal({
                 title: '<span class=\"text-info\">' + newdomain + '</span> added successfully',
                 content: 'The page will be refreshed in 5 second'
             });
             refreshPage(5000);
-        },
-        error: function (data) {
-            outputError(data.responseText);
-        }
-    });
+        })
+        .catch(error => {
+            outputError(error);
+        });
 }
 
 /*
@@ -242,22 +233,17 @@ function deleteDomain(domain) {
         title: 'Deleting domain <span class="text-info">' + domain + '</span>',
         content: 'Please sit and relax...'
     });
-    $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
-    $.ajax({
-        url: apiendpoint + '/v2/domains/' + domain,
-        type: 'DELETE',
-        data: {},
-        success: function (data) {
+    _delete(apiendpoint + '/v2/domains/' + domain, JSON.stringify({}))
+        .then(json => {
             msgModal({
                 title: '<span class=\"text-info\">' + domain + '</span> was successfully deleted!',
                 content: 'The page will be refreshed in 5 second.'
             });
             refreshPage(5000);
-        },
-        error: function (data) {
-            outputError(data.responseText);
-        }
-    });
+        })
+        .catch(error => {
+            outputError(error);
+        });
 }
 
 /*
