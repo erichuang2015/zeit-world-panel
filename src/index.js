@@ -25,6 +25,16 @@ function setLS(key, value) {
 }
 
 /*
+ * Refrash Page
+ */
+
+function refreshPage(second) {
+    setTimeout(function () {
+        location.reload();
+    }, second)
+}
+
+/*
  * Fetch helper
  */
 
@@ -77,9 +87,7 @@ function outputError(data) {
         title: 'Something wrong happened',
         content: '<code>' + data + '</code><br>The page will be refreshed in 5 second.'
     });
-    setTimeout(function () {
-        location.reload();
-    }, 5000)
+    refreshPage(5000);
 }
 
 
@@ -98,7 +106,7 @@ window.onload = function () {
         });
         setTimeout(function () {
             window.location.href = "/"
-        }, 4000)
+        }, 5000)
     };
     if (apikey && username && apiendpoint && (window.location.pathname === "/")) {
         msgModal({
@@ -107,7 +115,7 @@ window.onload = function () {
         });
         setTimeout(function () {
             window.location.href = "/zone/"
-        }, 4000)
+        }, 5000)
     }
 };
 
@@ -146,7 +154,7 @@ function logout() {
     });
     setTimeout(function () {
         window.location.href = "/"
-    }, 3000)
+    }, 5000)
 }
 
 /*
@@ -207,9 +215,7 @@ function newDomain() {
                 title: '<span class=\"text-info\">' + newdomain + '</span> added successfully',
                 content: 'The page will be refreshed in 5 second'
             });
-            setTimeout(function () {
-                location.reload();
-            }, 5000)
+            refreshPage(5000);
         },
         error: function (data) {
             outputError(data.responseText);
@@ -246,9 +252,7 @@ function deleteDomain(domain) {
                 title: '<span class=\"text-info\">' + domain + '</span> was successfully deleted!',
                 content: 'The page will be refreshed in 5 second.'
             });
-            setTimeout(function () {
-                location.reload();
-            }, 5000)
+            refreshPage(5000);
         },
         error: function (data) {
             outputError(data.responseText);
@@ -373,9 +377,7 @@ function deleteRecord(id, type) {
                 title: 'Successfully deleted!',
                 content: 'The page will be refreshed in 5 second'
             });
-            setTimeout(function () {
-                location.reload();
-            }, 5000)
+            refreshPage(5000);
         },
         error: function (data) {
             outputError(data.responseText);
@@ -435,9 +437,7 @@ function submitNewRecord() {
                     title: 'New record successfully added!',
                     content: 'The page will be refreshed in 5 second.'
                 });
-                setTimeout(function () {
-                    location.reload();
-                }, 5000)
+                refreshPage(5000);
             },
             error: function (data) {
                 outputError(data.responseText);
@@ -459,9 +459,7 @@ function submitNewRecord() {
                     title: 'New record successfully added!',
                     content: 'The page will be refreshed in 5 second.'
                 });
-                setTimeout(function () {
-                    location.reload();
-                }, 5000)
+                refreshPage(5000);
             },
             error: function (data) {
                 outputError(data.responseText);
