@@ -28,6 +28,48 @@ function setLS(key, value) {
 }
 
 /*
+ * Fetch helper
+ */
+
+get = (url) =>
+    fetch(url, {
+        method: 'GET',
+    }).then(resp => Promise.all([resp.ok, resp.status, resp.json()])
+    ).then(([ok, status, json]) => {
+        if (ok) {
+            return json;
+        } else {
+            this.handleError(status, json.error);
+            throw new Error(json.error);
+        }
+    }).catch(error => {
+        throw error;
+    });
+
+post = (url, body) => this._request(url, body, 'POST');
+
+put = (url, body) => this._request(url, body, 'PUT');
+
+_delete = (url, body) => this._request(url, body, 'DELETE');
+
+_request = (url, body, method) =>
+    fetch(url, {
+        method: method,
+        body: JSON.stringify(body)
+    }).then(resp => {
+        return Promise.all([resp.ok, resp.status, resp.json()]);
+    }).then(([ok, status, json]) => {
+        if (ok) {
+            return json;
+        } else {
+            this.handleError(status, json.error);
+            throw new Error(json.error);
+        }
+    }).catch(error => {
+        throw error;
+    });
+
+/*
  * Check whether user has already login or not
  * If user has already login then redirect them to zone list page
  * If not then redirect them to login page
