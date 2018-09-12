@@ -324,7 +324,8 @@ function showRecordInfo() {
     for (var i = 0; i < mainEl.length; i += 1) {
         mainEl[i].addEventListener('click', function () {
             this.classList.toggle("record-main-focus");
-            $(this).nextUntil('tr.record-main').toggleClass("sk-hide");
+            var elID = this.getAttribute("data-id");
+            document.getElementById('record-info-' + elID).classList.toggle("sk-hide");
         })
     }
 }

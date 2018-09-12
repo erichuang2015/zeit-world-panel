@@ -219,7 +219,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bdtpl@1.0.6"></script>
     <script src="https://cdn.jsdelivr.net/npm/modal-vanilla@0.4.0"></script>
     <script id="record-item-tpl" type="text/html">
-        <tr class="record-main">
+        <tr data-id="<%- recordName %>" class="record-main">
             <td><%- recordName %></td>
             <td>60</td>
             <td>IN</td>
@@ -238,7 +238,7 @@
                 <span class="record-no-select"><%- new Date(updated).toLocaleDateString() %></span>
             </td>
         </tr>
-        <tr class="record-info sk-hide">
+        <tr id="record-info-<%- recordName %>" class="record-info sk-hide">
             <td colspan="7">
                 <dl>
                     <dt>Name</dt>
