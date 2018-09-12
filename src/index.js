@@ -13,9 +13,6 @@ var apikey = localStorage.getItem('token');
 var username = localStorage.getItem('username');
 var apiendpoint = localStorage.getItem('api');
 
-var msgTitleEl = document.getElementById('msg-title');
-var msgBodyEl = document.getElementById('msg-body');
-
 /*
  * localStorage Helper
  */
@@ -70,8 +67,8 @@ _request = (url, body, method) =>
     });
 
 function msgModal(option) {
-    msgTitleEl.innerHTML = option.title;
-    msgBodyEl.innerHTML = option.content;
+    document.getElementById('msg-title').innerHTML = option.title;
+    document.getElementById('msg-body').innerHTML = option.content;
     $('#msg').modal()
 }
 
@@ -104,9 +101,10 @@ window.onload = function () {
         }, 4000)
     };
     if (apikey && username && apiendpoint && (window.location.pathname === "/")) {
-        msgTitleEl.innerHTML = 'Redirecting...';
-        msgBodyEl.innerHTML = 'You have already logged in! Redirecting to Zone List Page in about 5 seconds...';
-        $('#msg').modal()
+        msgModal({
+            title: 'Redirecting...',
+            content: 'You have already logged in! Redirecting to Zone List Page in about 5 seconds...'
+        });
         setTimeout(function () {
             window.location.href = "/zone/"
         }, 4000)
@@ -125,9 +123,10 @@ function loginSubmit() {
     setLS('token', loginKey);
     setLS('username', loginUsername);
     setLS('api', apiEndpoint);
-    msgTitleEl.innerHTML = 'Logging in';
-    msgBodyEl.innerHtml = 'You will be redirected to Zone List Page in about 5 seconds...';
-    $('#msg').modal()
+    msgModal({
+        title: 'Logging in',
+        content: 'You will be redirected to Zone List Page in about 5 seconds...'
+    });
     setTimeout(function () {
         window.location.href = "/zone/"
     }, 5000)
@@ -141,9 +140,10 @@ function loginSubmit() {
 function logout() {
     localStorage.removeItem("username");
     localStorage.removeItem("secretkey");
-    msgTitleEl.innerHTML = 'Logging out';
-    msgBodyEl.innerHTML = 'Cleaning browser localstorage. You will be logged out soon.';
-    $('#msg').modal()
+    msgModal({
+        title: 'Logging out',
+        content: 'Cleaning browser localstorage. You will be logged out soon.'
+    });
     setTimeout(function () {
         window.location.href = "/"
     }, 3000)
@@ -155,9 +155,10 @@ function logout() {
  */
 
 function getDomainList() {
-    msgTitleEl.innerHTML = 'Loading domain list';
-    msgBodyEl.innerHTML = 'Please sit and relax...';
-    $('#msg').modal()
+    msgModal({
+        title: 'Loading domain list',
+        content: 'Please sit and relax...'
+    });
     var domainNum = 0;
     $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
     $.ajax({
@@ -175,12 +176,7 @@ function getDomainList() {
             });
         },
         error: function (data) {
-            msgTitleEl.innerHTML = 'Something wrong happened';
-            msgBodyEl.innerHTML = '<code>' + data.responseText + '</code><br>The page will be refreshed in 3 second.';
-            $('#msg').modal()
-            setTimeout(function () {
-                location.reload();
-            }, 3000)
+            outputError(data.responseText);
         }
     });
 }
@@ -193,9 +189,10 @@ function getDomainList() {
 function newDomain() {
     $('#new-domain').modal('hide')
     var newdomain = document.getElementById('new-domain-name').value;
-    msgTitleEl.innerHTML = 'Adding' + '&nbsp;<span class=\"text-info\">' + newdomain + '</span>';
-    msgBodyEl.innerHTML = 'Please sit and relax...';
-    $('#msg').modal()
+    msgModal({
+        title: 'Adding' + '&nbsp;<span class=\"text-info\">' + newdomain + '</span>',
+        content: 'Please sit and relax...'
+    });
     $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
     $.ajax({
         type: 'POST',
@@ -206,20 +203,16 @@ function newDomain() {
             serviceType: "zeit.world"
         }),
         success: function (data) {
-            msgTitleEl.innerHTML = '<span class=\"text-info\">' + newdomain + '</span> added successfully';
-            msgBodyEl.innerHTML = 'The page will be refreshed in 5 second';
-            $('#msg').modal()
+            msgModal({
+                title: '<span class=\"text-info\">' + newdomain + '</span> added successfully',
+                content: 'The page will be refreshed in 5 second'
+            });
             setTimeout(function () {
                 location.reload();
             }, 5000)
         },
         error: function (data) {
-            msgTitleEl.innerHTML = 'Something wrong happened';
-            msgBodyEl.innerHTML = '<code>' + data.responseText + '</code><br>The page will be refreshed in 5 second.';
-            $('#msg').modal()
-            setTimeout(function () {
-                location.reload();
-            }, 5000)
+            outputError(data.responseText);
         }
     });
 }
@@ -232,35 +225,33 @@ function newDomain() {
 
 function confirmDeleteDomain(el) {
     var domainWillBeleted = el.getAttribute("data-id");
-    msgTitleEl.innerHTML = '<span class="sk-text-bold text-danger">ATTENTION!! This action is irreversible!</span>';
-    msgBodyEl.innerHTML = '<span class="sk-text-bold">Domain <span class="text-info">' + domainWillBeleted + '</span> will be deleted!</span><br>Are you sure you want to delele this domain? All records under this domain will be lost and can\'t be recovered!!' + '<br><button type="button" class="btn btn-danger sk-mt-4 sk-mr-2" onclick="deleteDomain(\'' + domainWillBeleted + '\')">Confirm</button><button type="button" class="btn btn-secondary sk-mt-4" data-dismiss="modal" aria-label="Close">Cancel</button>';
-    $('#msg').modal()
+    msgModal({
+        title: '<span class="sk-text-bold text-danger">ATTENTION!! This action is irreversible!</span>',
+        content: '<span class="sk-text-bold">Domain <span class="text-info">' + domainWillBeleted + '</span> will be deleted!</span><br>Are you sure you want to delele this domain? All records under this domain will be lost and can\'t be recovered!!' + '<br><button type="button" class="btn btn-danger sk-mt-4 sk-mr-2" onclick="deleteDomain(\'' + domainWillBeleted + '\')">Confirm</button><button type="button" class="btn btn-secondary sk-mt-4" data-dismiss="modal" aria-label="Close">Cancel</button>'
+    });
 }
 
 function deleteDomain(domain) {
-    msgTitleEl.innerHTML = 'Deleting domain <span class="text-info">' + domain + '</span>';
-    msgBodyEl.innerHTML = 'Please sit and relax...';
-    $('#msg').modal()
+    msgModal({
+        title: 'Deleting domain <span class="text-info">' + domain + '</span>',
+        content: 'Please sit and relax...'
+    });
     $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
     $.ajax({
         url: apiendpoint + '/v2/domains/' + domain,
         type: 'DELETE',
         data: {},
         success: function (data) {
-            msgTitleEl.innerHTML = '<span class=\"text-info\">' + domain + '</span> was successfully deleted!';
-            msgBodyEl.innerHTML = 'The page will be refreshed in 5 second';
-            $('#msg').modal()
+            msgModal({
+                title: '<span class=\"text-info\">' + domain + '</span> was successfully deleted!',
+                content: 'The page will be refreshed in 5 second.'
+            });
             setTimeout(function () {
                 location.reload();
             }, 5000)
         },
         error: function (data) {
-            msgTitleEl.innerHTML = 'Something wrong happened';
-            msgBodyEl.innerHTML = '<code>' + data.responseText + '</code><br>The page will be refreshed in 5 second.';
-            $('#msg').modal()
-            setTimeout(function () {
-                location.reload();
-            }, 5000)
+            outputError(data.responseText);
         }
     });
 }
@@ -294,9 +285,10 @@ function getCurrentDomain() {
  * Used at record list page
  */
 function getRecordList() {
-    msgTitleEl.innerHTML = 'Loading records of <span class="text-info">' + searchQuery.domain + '</span>';
-    msgBodyEl.innerHTML = 'Please sit and relax...';
-    $('#msg').modal()
+    msgModal({
+        title: 'Loading records of <span class="text-info">' + searchQuery.domain + '</span>',
+        content: 'Please sit and relax...'
+    });
     var recordNum = 0
     $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
 
@@ -334,12 +326,7 @@ function getRecordList() {
             document.getElementById('record-list-num').innerHTML = recordNum;
         },
         error: function (data) {
-            msgTitleEl.innerHTML = 'Something wrong happened';
-            msgBodyEl.innerHTML = '<code>' + data.responseText + '</code><br>The page will be refreshed in 5 second';
-            $('#msg').modal()
-            setTimeout(function () {
-                location.reload();
-            }, 5000)
+            outputError(data.responseText);
         }
     });
 }
@@ -365,35 +352,33 @@ function confirmDeleteRecord(el) {
     var recordWillDeleted = el.getAttribute("data-id");
     var recordDomainWillDeleted = el.getAttribute("data-name");
     var recordTypeWillDeleted = el.getAttribute("data-type");
-    msgTitleEl.innerHTML = '<span class="sk-text-bold text-danger">ATTENTION!! This action is irreversible!</span>';
-    msgBodyEl.innerHTML = '<span class="sk-text-bold">Are you sure you want to delele the <span class="text-info">' + recordTypeWillDeleted + '</span> record?</span><br><span class="sk-text-bold text-primary">' + recordDomainWillDeleted + '</span>' + '<br><button type="button" class="btn btn-danger sk-mt-4 sk-mr-2" onclick="deleteRecord(\'' + recordWillDeleted + '\',\''+ recordTypeWillDeleted +'\')">Confirm</button><button type="button" class="btn btn-secondary sk-mt-4" data-dismiss="modal" aria-label="Close">Cancel</button>';
-    $('#msg').modal()
+    msgModal({
+        title: '<span class="sk-text-bold text-danger">ATTENTION!! This action is irreversible!</span>',
+        content: '<span class="sk-text-bold">Are you sure you want to delele the <span class="text-info">' + recordTypeWillDeleted + '</span> record?</span><br><span class="sk-text-bold text-primary">' + recordDomainWillDeleted + '</span>' + '<br><button type="button" class="btn btn-danger sk-mt-4 sk-mr-2" onclick="deleteRecord(\'' + recordWillDeleted + '\',\'' + recordTypeWillDeleted + '\')">Confirm</button><button type="button" class="btn btn-secondary sk-mt-4" data-dismiss="modal" aria-label="Close">Cancel</button>'
+    });
 }
 
 function deleteRecord(id, type) {
-    msgTitleEl.innerHTML = 'Deleting <span class="text-info">' + type + '</span> record';
-    msgBodyEl.innerHTML = 'Please ait and relax...';
-    $('#msg').modal()
+    msgModal({
+        title: 'Deleting <span class="text-info">' + type + '</span> record',
+        content: 'Please ait and relax...'
+    });
     $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
     $.ajax({
         url: apiendpoint + '/v2/domains/' + searchQuery.domain + '/records/' + id,
         type: 'DELETE',
         data: {},
         success: function (data) {
-            msgTitleEl.innerHTML = 'Successfully deleted!';
-            msgBodyEl.innerHTML = 'The page will be refreshed in 5 second';
-            $('#msg').modal()
+            msgModal({
+                title: 'Successfully deleted!',
+                content: 'The page will be refreshed in 5 second'
+            });
             setTimeout(function () {
                 location.reload();
             }, 5000)
         },
         error: function (data) {
-            msgTitleEl.innerHTML = 'Something wrong happened';
-            msgBodyEl.innerHTML = '<code>' + data.responseText + '</code><br>The page will be refreshed in 5 second';
-            $('#msg').modal()
-            setTimeout(function () {
-                location.reload();
-            }, 5000)
+            outputError(data.responseText);
         }
     });
 }
@@ -425,9 +410,10 @@ function submitNewRecord() {
     var newRecordMXPriority = document.getElementById('new-record-mx-priority').value;
     var newRecordValue = document.getElementById('new-record-value').value;
     $('#new-record').modal('hide')
-    msgTitleEl.innerHTML = 'Adding new <span class="text-info">' + newRecordType + '</span> record';
-    msgBodyEl.innerHTML = 'Please sit and relax...';
-    $('#msg').modal()
+    msgModal({
+        title: 'Adding new <span class="text-info">' + newRecordType + '</span> record',
+        content: 'Please ait and relax...'
+    });
     $.ajaxSetup({ headers: { 'Authorization': username + ' ' + apikey } });
     if (newRecordName === "@") {
         newRecordName = "";
@@ -445,21 +431,16 @@ function submitNewRecord() {
                 value: newRecordValue
             }),
             success: function (data) {
-                msgTitleEl.innerHTML = 'New record successfully added!';
-                msgBodyEl.innerHTML = 'The page will be refreshed in 5 second.';
-                $('#msg').modal()
+                msgModal({
+                    title: 'New record successfully added!',
+                    content: 'The page will be refreshed in 5 second.'
+                });
                 setTimeout(function () {
                     location.reload();
                 }, 5000)
             },
             error: function (data) {
-                msgTitleEl.innerHTML = 'Something wrong happened';
-                msgBodyEl.innerHTML = '<code>' + data.responseText + '</code><br>The page will be refreshed in 5 second.';
-                $('#msg').modal()
-                debugger;
-                setTimeout(function () {
-                    location.reload();
-                }, 5000)
+                outputError(data.responseText);
             }
         });
     } else {
@@ -474,20 +455,16 @@ function submitNewRecord() {
                 value: newRecordValue
             }),
             success: function (data) {
-                msgTitleEl.innerHTML = 'New record successfully added!';
-                msgBodyEl.innerHTML = 'The page will be refreshed in 5 second.';
-                $('#msg').modal()
+                msgModal({
+                    title: 'New record successfully added!',
+                    content: 'The page will be refreshed in 5 second.'
+                });
                 setTimeout(function () {
                     location.reload();
                 }, 5000)
             },
             error: function (data) {
-                msgTitleEl.innerHTML = 'Something wrong happened';
-                msgBodyEl.innerHTML = '<code>' + data.responseText + '</code><br>The page will be refreshed in 5 second.';
-                $('#msg').modal()
-                setTimeout(function () {
-                    location.reload();
-                }, 5000)
+                outputError(data.responseText);
             }
         });
     }
