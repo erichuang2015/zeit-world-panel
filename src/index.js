@@ -105,7 +105,7 @@ function getDomainList() {
         dataType: "json",
         success: function (data) {
             $('#msg').modal('hide');
-            $.each(data.domains, function (index, value) {
+            data.domains.forEach((value, index) => {
                 document.getElementById('list-no-domain').classList.add("sk-hide");
                 var html = baidu.template('domain-item-tpl', value);
                 document.getElementById('domainListBody').insertAdjacentHTML('beforeend', html);
@@ -245,7 +245,7 @@ function getRecordList() {
         data: {},
         success: function (data) {
             $('#msg').modal('hide');
-            $.each(data.records, function (index, value) {
+            data.records.forEach((value, index) => {
                 recordNum = recordNum + 1
 
                 if (value.name.length === 0) {
