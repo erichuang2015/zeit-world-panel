@@ -54,17 +54,17 @@
                 <form>
                     <div class="form-group">
                         <label for="formGroupExampleInput">Username</label>
-                        <input name="username" type="text" class="form-control" id="login-username" placeholder="Default as Bearer" required>
+                        <input name="username" type="text" class="form-control" id="login-username" placeholder="Default as Bearer" autocomplete required>
                     </div>
                     <div class="form-group">
                         <label for="formGroupExampleInput2">Secret Token</label>
-                        <input name="token" type="password" class="form-control" id="login-token" placeholder="Paste your token here" required>
+                        <input name="token" type="password" class="form-control" id="login-token" placeholder="Paste your token here" autocomplete required>
                         <small class="form-text text-muted">You can generate or copy your zeit token <a class="sk-link text-primary"
                                 href="https://zeit.co/account/tokens" target="_blank">here</a>.</small>
                     </div>
                     <div class="form-group">
                         <label for="formGroupExampleInput2">API Endpoint</label>
-                        <input name="token" type="url" class="form-control" id="login-api" placeholder="Fill in your API Endpoint" value="https://api.zeit.co" required>
+                        <input name="token" type="url" class="form-control" id="login-api" placeholder="Fill in your API Endpoint" autocomplete value="https://api.zeit.co" required>
                     </div>
                 </form>
                 <button class="btn btn-block btn-primary" onclick="loginSubmit()">Submit</button>
@@ -98,6 +98,7 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bdtpl@1.0.6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/modal-vanilla@0.4.0"></script>
     <script src="/index.js"></script>
 </body>
 
