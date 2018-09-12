@@ -69,6 +69,24 @@ _request = (url, body, method) =>
         throw error;
     });
 
+function msgModal(option) {
+    msgTitleEl.innerHTML = option.title;
+    msgBodyEl.innerHTML = option.content;
+    $('#msg').modal()
+}
+
+function outputError(data) {
+    msgModal({
+        title: 'Something wrong happened',
+        content: '<code>' + data + '</code><br>The page will be refreshed in 5 second.'
+    });
+    setTimeout(function () {
+        location.reload();
+    }, 5000)
+}
+
+
+
 /*
  * Check whether user has already login or not
  * If user has already login then redirect them to zone list page
@@ -77,9 +95,10 @@ _request = (url, body, method) =>
 
 window.onload = function () {
     if ((!apikey || !username || !apiendpoint) && (window.location.pathname !== "/")) {
-        msgTitleEl.innerHTML = 'Redirecting...';
-        msgBodyEl.innerHTML = 'You haven\'t fill in your Token or Username! Redirecting to login page in about 5 seconds...';
-        $('#msg').modal()
+        msgModal({
+            title: 'Redirecting...',
+            content: 'You haven\'t fill in your Token or Username! Redirecting to login page in about 5 seconds...'
+        });
         setTimeout(function () {
             window.location.href = "/"
         }, 4000)
