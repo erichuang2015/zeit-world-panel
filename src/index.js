@@ -320,10 +320,13 @@ function getRecordList() {
  * Used only in getRecordList()
  */
 function showRecordInfo() {
-    $('.record-main').click(function () {
-        $(this).toggleClass("record-main-focus");
-        $(this).nextUntil('tr.record-main').toggleClass("sk-hide");
-    });
+    var mainEl = document.getElementsByClassName('record-main');
+    for (var i = 0; i < mainEl.length; i += 1) {
+        mainEl[i].addEventListener('click', function () {
+            this.classList.toggle("record-main-focus");
+            $(this).nextUntil('tr.record-main').toggleClass("sk-hide");
+        })
+    }
 }
 
 /*
@@ -368,7 +371,7 @@ function deleteRecord(id, type) {
 
 function toggleMXPriority() {
     document.getElementById('new-record-mx-priority-group').style.display = 'none';
-    $('#new-record-type').on('change', function () {
+    document.getElementById('new-record-type').addEventListener('change', function() {
         if (document.getElementById('new-record-type').value === "MX") {
             document.getElementById('new-record-mx-priority-group').style.display = 'block';
         } else {
