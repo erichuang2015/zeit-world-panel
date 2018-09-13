@@ -173,7 +173,6 @@ function getDomainList() {
     });
 
     get(apiendpoint + "/v2/domains").then(json => {
-        $('#msg').modal('hide');
         var domainNum = 0;
         json.domains.forEach((value, index) => {
             document.getElementById('list-no-domain').classList.add("sk-hide");
@@ -182,6 +181,7 @@ function getDomainList() {
             domainNum = domainNum + 1;
             document.getElementById('list-domain-num').innerHTML = domainNum;
         });
+        $('#msg').modal('hide');
     }).catch(error => {
         outputError(error);
     });
@@ -282,7 +282,6 @@ function getRecordList() {
     var recordNum = 0
 
     get(apiendpoint + '/v2/domains/' + searchQuery.domain + '/records').then(json => {
-        $('#msg').modal('hide');
         json.records.forEach((value, index) => {
             recordNum = recordNum + 1
 
@@ -308,6 +307,7 @@ function getRecordList() {
             document.getElementById('recordListBody').insertAdjacentHTML('afterbegin', html);
         });
         showRecordInfo();
+        $('#msg').modal('hide');
         document.getElementById('record-list-num').innerHTML = recordNum;
     }).catch(error => {
         outputError(error);
@@ -391,7 +391,7 @@ function submitNewRecord() {
     var newRecordType = document.getElementById('new-record-type').value;
     var newRecordMXPriority = document.getElementById('new-record-mx-priority').value;
     var newRecordValue = document.getElementById('new-record-value').value;
-    $('#new-record').modal('hide')
+    $('#new-record').modal('hide');
     msgModal({
         title: 'Adding new <span class="text-info">' + newRecordType + '</span> record',
         content: 'Please ait and relax...'
